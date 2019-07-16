@@ -1,31 +1,31 @@
 export enum Card {
-  CLUBS_3 = 100,
-  CLUBS_4 = 110,
-  CLUBS_5 = 120,
-  CLUBS_6 = 130,
-  CLUBS_7 = 140,
-  CLUBS_8 = 150,
-  CLUBS_9 = 160,
-  CLUBS_10 = 170,
-  CLUBS_JACK = 180,
-  CLUBS_QUEEN = 190,
-  CLUBS_KING = 192,
-  CLUBS_ACE = 194,
-  CLUBS_2 = 196,
+  CLUBS_3 = 0,
+  CLUBS_4 = 10,
+  CLUBS_5 = 20,
+  CLUBS_6 = 30,
+  CLUBS_7 = 40,
+  CLUBS_8 = 50,
+  CLUBS_9 = 60,
+  CLUBS_10 = 70,
+  CLUBS_JACK = 80,
+  CLUBS_QUEEN = 90,
+  CLUBS_KING = 100,
+  CLUBS_ACE = 110,
+  CLUBS_2 = 120,
 
-  SPADES_3 = 200,
-  SPADES_4 = 210,
-  SPADES_5 = 220,
-  SPADES_6 = 230,
-  SPADES_7 = 240,
-  SPADES_8 = 250,
-  SPADES_9 = 260,
-  SPADES_10 = 270,
-  SPADES_JACK = 280,
-  SPADES_QUEEN = 290,
-  SPADES_KING = 292,
-  SPADES_ACE = 294,
-  SPADES_2 = 296,
+  SPADES_3 = 130,
+  SPADES_4 = 140,
+  SPADES_5 = 150,
+  SPADES_6 = 160,
+  SPADES_7 = 170,
+  SPADES_8 = 180,
+  SPADES_9 = 190,
+  SPADES_10 = 200,
+  SPADES_JACK = 210,
+  SPADES_QUEEN = 220,
+  SPADES_KING = 230,
+  SPADES_ACE = 240,
+  SPADES_2 = 250,
 
   DIAMONDS_3 = 300,
   DIAMONDS_4 = 310,
@@ -80,6 +80,8 @@ export interface Play {
 }
 
 export interface PlayedSet {
+  open: boolean;
+  passedPlayerIds: number[];
   plays: Play[];
   set: Set;
 }
@@ -100,7 +102,7 @@ export interface ConcedePayload {
 }
 
 export interface NewGamePayload {
-  players: [Player, Player, Player, Player];
+  players: Player[];
 }
 
 export interface GameOverPayload {
@@ -140,8 +142,9 @@ export interface Player {
 
 export interface GameBoard {
   id: number;
-  currentSet: undefined | Set;
   playedSets: PlayedSet[];
-  players: [Player, Player, Player, Player];
+  players: Player[];
+  winnerPlayerId: undefined | number;
+  losingPlayerIds: number[];
   playerTurn: number;
 }

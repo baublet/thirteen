@@ -1,4 +1,5 @@
 import buildBoard, {
+  advanceWinnerIfApplicable,
   advanceBoardToNextTurn,
   processNewGame,
   processNewSet,
@@ -11,16 +12,11 @@ let id = 0;
 const player = (): Player => {
   return {
     playerId: id++,
-    hand: []
+    hand: [Card.CLUBS_3]
   };
 };
 
-const players: [Player, Player, Player, Player] = [
-  player(),
-  player(),
-  player(),
-  player()
-];
+const players: Player[] = [player(), player(), player(), player()];
 
 it("builds a board via a series of events", () => {
   buildBoard([
@@ -62,13 +58,26 @@ it("process a new game event", () => {
   // @ts-ignore
   expect(board.players.length).toBe(4);
   // @ts-ignore
-  expect(board).toEqual({ players, playerTurn: players[0].playerId });
+  expect(board).toEqual({
+    players,
+    playerTurn: players[0].playerId,
+    losingPlayerIds: []
+  });
 });
 
 it("advances a game board to the next turn", () => {
   const board = {
+    losingPlayerIds: [],
     players,
-    playerTurn: players[0].playerId
+    playerTurn: players[0].playerId,
+    playedSets: [
+      {
+        set: Set.ONE,
+        open: true,
+        plays: [],
+        passedPlayerIds: []
+      }
+    ]
   };
   advanceBoardToNextTurn(board);
   expect(board.playerTurn).toBe(players[1].playerId);
@@ -108,6 +117,8 @@ it("processes a new play", () => {
   );
   // @ts-ignore
   expect(board.playedSets[board.playedSets.length - 1].set).toBe(Set.TWO);
+  // @ts-ignore
+  expect(board.playedSets[board.playedSets.length - 1].open).toBeTruthy();
   processPlay(
     {
       cards: [Card.CLUBS_10, Card.CLUBS_3],
@@ -121,4 +132,22 @@ it("processes a new play", () => {
     // @ts-ignore
     board.playedSets[board.playedSets.length - 1].plays[0].cards.length
   ).toBe(2);
+});
+
+it("sets a winner if there is a winner", () => {
+  const board = {
+    winnerPlayerId: undefined,
+    players: [
+      player(),
+      player(),
+      player(),
+      {
+        playerId: id++,
+        hand: []
+      }
+    ],
+    playerTurn: players[0].playerId
+  };
+  advanceWinnerIfApplicable(board);
+  expect(board.winnerPlayerId).toBe(board.players[3].playerId);
 });
