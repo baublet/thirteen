@@ -1,6 +1,5 @@
 import buildBoard, {
   advanceWinnerIfApplicable,
-  advanceBoardToNextTurn,
   processNewGame,
   processNewSet,
   processPlay,
@@ -51,40 +50,6 @@ it("builds a board via a series of events", () => {
       }
     }
   ]);
-});
-
-it("process a new game event", () => {
-  const board = blankBoard();
-  processNewGame({ players }, board);
-  // @ts-ignore
-  expect(board.players.length).toBe(4);
-  // @ts-ignore
-  const expectedBoard = blankBoard();
-  expectedBoard.players = players;
-  expectedBoard.playerTurn = players[0].playerId;
-  expect(board).toEqual(expectedBoard);
-});
-
-it("advances a game board to the next turn", () => {
-  const board = blankBoard();
-  board.players = players;
-  (board.playerTurn = players[0].playerId),
-    (board.playedSets = [
-      {
-        set: Set.ONE,
-        open: true,
-        plays: [],
-        passedPlayerIds: []
-      }
-    ]);
-  advanceBoardToNextTurn(board);
-  expect(board.playerTurn).toBe(players[1].playerId);
-  advanceBoardToNextTurn(board);
-  expect(board.playerTurn).toBe(players[2].playerId);
-  advanceBoardToNextTurn(board);
-  expect(board.playerTurn).toBe(players[3].playerId);
-  advanceBoardToNextTurn(board);
-  expect(board.playerTurn).toBe(players[0].playerId);
 });
 
 it("processes a new set", () => {
