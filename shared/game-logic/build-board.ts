@@ -3,15 +3,16 @@ import {
   GameBoard,
   GameEventType,
   NewGamePayload,
-  PlayedSet,
-  Set,
-  Player,
   PlayPayload,
-  Card,
   NewSetPayload,
   PassPayload
 } from "./game";
 import advanceBoardToNextTurn from "./event-processors/advance-board-to-next-turn";
+import advanceWinner from "./event-processors/advance-winner";
+import processNewGame from "./event-processors/process-new-game";
+import processNewSet from "./event-processors/process-new-set";
+import processPass from "./event-processors/process-pass";
+import processPlay from "./event-processors/process-play";
 
 const deepClone = require("lodash.clonedeep");
 
@@ -51,11 +52,12 @@ export default function buildBoard(
         break;
       case GameEventType.PASS:
         processPass(event.payload as PassPayload, gameBoard);
+        advanceWinner(gameBoard);
         advanceBoardToNextTurn(gameBoard);
         break;
       case GameEventType.PLAY:
         processPlay(event.payload as PlayPayload, gameBoard);
-        advanceWinnerIfApplicable(gameBoard);
+        advanceWinner(gameBoard);
         advanceBoardToNextTurn(gameBoard);
         break;
     }
@@ -63,73 +65,4 @@ export default function buildBoard(
     existingBoardState.states.push(gameBoard as GameBoard);
   });
   return existingBoardState as GameBoardState;
-}
-
-export function processNewGame(
-  eventPayload: NewGamePayload,
-  gameBoard: GameBoard
-): void {
-  gameBoard.players = eventPayload.players;
-  gameBoard.playerTurn = gameBoard.players[0].playerId;
-  gameBoard.losingPlayerIds = [];
-}
-
-export function processPlay(
-  eventPayload: PlayPayload,
-  gameBoard: GameBoard
-): void {
-  // Remove the cards from the player's hand
-  gameBoard.players.forEach((player: Player, i: number) => {
-    if (player.playerId !== eventPayload.playerId) {
-      return;
-    }
-    gameBoard.players[i].hand = player.hand.filter(
-      (card: Card) => !eventPayload.cards.includes(card)
-    );
-  });
-  // Add the play to the game board
-  gameBoard.playedSets[gameBoard.playedSets.length - 1].plays.push({
-    cards: eventPayload.cards,
-    playerId: eventPayload.playerId
-  });
-}
-
-export function processNewSet(
-  eventPayload: NewSetPayload,
-  gameBoard: GameBoard
-): void {
-  gameBoard.playedSets = gameBoard.playedSets || [];
-  gameBoard.playedSets.push({
-    open: true,
-    passedPlayerIds: [],
-    plays: [],
-    set: eventPayload.set
-  });
-}
-
-export function processPass(
-  eventPayload: PassPayload,
-  gameBoard: GameBoard
-): void {
-  const setIndex = gameBoard.playedSets.length - 1;
-  gameBoard.playedSets[setIndex].passedPlayerIds.push(eventPayload.playerId);
-  if (
-    gameBoard.playedSets[setIndex].passedPlayerIds.length ===
-    gameBoard.players.length
-  ) {
-    gameBoard.playedSets[setIndex].open = false;
-  }
-}
-
-export function advanceWinnerIfApplicable(gameBoard: GameBoard): boolean {
-  let winner: number | false = false;
-  gameBoard.players.forEach((player: Player) => {
-    if (player.hand.length === 0) {
-      winner = player.playerId;
-    }
-  });
-  if (winner === false) {
-    return false;
-  }
-  gameBoard.winnerPlayerId = winner;
 }

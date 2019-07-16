@@ -1,8 +1,4 @@
 import buildBoard, {
-  advanceWinnerIfApplicable,
-  processNewGame,
-  processNewSet,
-  processPlay,
   blankBoard
 } from "./build-board";
 import { Player, Set, Card, GameEventType } from "./game";
@@ -50,60 +46,4 @@ it("builds a board via a series of events", () => {
       }
     }
   ]);
-});
-
-it("processes a new set", () => {
-  const board = blankBoard();
-  processNewSet(
-    {
-      set: Set.TWO
-    },
-    board
-  );
-  // @ts-ignore
-  expect(board.playedSets[board.playedSets.length - 1].set).toBe(Set.TWO);
-});
-
-it("processes a new play", () => {
-  const board = blankBoard();
-  board.players = players;
-  processNewSet(
-    {
-      set: Set.TWO
-    },
-    board
-  );
-  // @ts-ignore
-  expect(board.playedSets[board.playedSets.length - 1].set).toBe(Set.TWO);
-  // @ts-ignore
-  expect(board.playedSets[board.playedSets.length - 1].open).toBeTruthy();
-  processPlay(
-    {
-      cards: [Card.CLUBS_10, Card.CLUBS_3],
-      playerId: board.players[0].playerId
-    },
-    board
-  );
-  // @ts-ignore
-  expect(board.playedSets[board.playedSets.length - 1].plays.length).toBe(1);
-  expect(
-    // @ts-ignore
-    board.playedSets[board.playedSets.length - 1].plays[0].cards.length
-  ).toBe(2);
-});
-
-it("sets a winner if there is a winner", () => {
-  const board = blankBoard();
-  board.players = [
-    player(),
-    player(),
-    player(),
-    {
-      playerId: id++,
-      hand: []
-    }
-  ];
-  board.playerTurn = players[0].playerId;
-  advanceWinnerIfApplicable(board);
-  expect(board.winnerPlayerId).toBe(board.players[3].playerId);
 });

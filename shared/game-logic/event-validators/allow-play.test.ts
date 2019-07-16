@@ -1,6 +1,6 @@
 import { Set, Player, Card } from "../game";
 import { blankBoard } from "../build-board";
-import advanceBoardToNextTurn from "./advance-board-to-next-turn";
+import allowPlay from "./allow-play";
 
 let id = 0;
 
@@ -25,12 +25,4 @@ it("advances a game board to the next turn", () => {
       passedPlayerIds: []
     }
   ];
-  advanceBoardToNextTurn(board);
-  expect(board.playerTurn).toBe(players[1].playerId);
-  advanceBoardToNextTurn(board);
-  expect(board.playerTurn).toBe(players[2].playerId);
-  advanceBoardToNextTurn(board);
-  expect(board.playerTurn).toBe(players[3].playerId);
-  advanceBoardToNextTurn(board);
-  expect(board.playerTurn).toBe(players[0].playerId);
 });
