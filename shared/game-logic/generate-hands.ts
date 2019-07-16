@@ -1,17 +1,26 @@
 import { Card, Hand } from "./game";
 import shuffleArray from "./shuffle";
 
+const MAX_CARDS = 13;
+
 const Cards = () =>
   Object.keys(Card).filter(val => isNaN(parseInt(`${val}`, 10)));
 
-export default function generateHands(): [Hand, Hand, Hand, Hand] {
+export default function generateHands(
+  players = 4,
+  maxCards = MAX_CARDS
+): Hand[] {
   const allCards = shuffleArray(Cards());
-  const hands: [Hand, Hand, Hand, Hand] = [[], [], [], []];
-  while (allCards.length) {
-    hands[0].push(parseInt(Card[allCards.pop()], 10));
-    hands[1].push(parseInt(Card[allCards.pop()], 10));
-    hands[2].push(parseInt(Card[allCards.pop()], 10));
-    hands[3].push(parseInt(Card[allCards.pop()], 10));
+  let cardsDealt = 0;
+  const hands = [];
+  for (let i = 0; i < players; i++) {
+    hands.push([]);
+  }
+  while (allCards.length && cardsDealt < maxCards) {
+    hands.forEach(hand => {
+      hand.push(parseInt(Card[allCards.pop()], 10));
+    });
+    cardsDealt++;
   }
   return hands;
 }

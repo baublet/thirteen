@@ -141,7 +141,7 @@ export interface Player {
 }
 
 export interface GameBoard {
-  id: number;
+  id: undefined | number;
   playedSets: PlayedSet[];
   players: Player[];
   winnerPlayerId: undefined | number;

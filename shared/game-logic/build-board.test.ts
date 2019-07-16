@@ -3,7 +3,8 @@ import buildBoard, {
   advanceBoardToNextTurn,
   processNewGame,
   processNewSet,
-  processPlay
+  processPlay,
+  blankBoard
 } from "./build-board";
 import { Player, Set, Card, GameEventType } from "./game";
 
@@ -53,32 +54,29 @@ it("builds a board via a series of events", () => {
 });
 
 it("process a new game event", () => {
-  const board = {};
+  const board = blankBoard();
   processNewGame({ players }, board);
   // @ts-ignore
   expect(board.players.length).toBe(4);
   // @ts-ignore
-  expect(board).toEqual({
-    players,
-    playerTurn: players[0].playerId,
-    losingPlayerIds: []
-  });
+  const expectedBoard = blankBoard();
+  expectedBoard.players = players;
+  expectedBoard.playerTurn = players[0].playerId;
+  expect(board).toEqual(expectedBoard);
 });
 
 it("advances a game board to the next turn", () => {
-  const board = {
-    losingPlayerIds: [],
-    players,
-    playerTurn: players[0].playerId,
-    playedSets: [
+  const board = blankBoard();
+  board.players = players;
+  (board.playerTurn = players[0].playerId),
+    (board.playedSets = [
       {
         set: Set.ONE,
         open: true,
         plays: [],
         passedPlayerIds: []
       }
-    ]
-  };
+    ]);
   advanceBoardToNextTurn(board);
   expect(board.playerTurn).toBe(players[1].playerId);
   advanceBoardToNextTurn(board);
@@ -90,10 +88,7 @@ it("advances a game board to the next turn", () => {
 });
 
 it("processes a new set", () => {
-  const board = {
-    players,
-    playerTurn: players[0].playerId
-  };
+  const board = blankBoard();
   processNewSet(
     {
       set: Set.TWO
@@ -105,10 +100,8 @@ it("processes a new set", () => {
 });
 
 it("processes a new play", () => {
-  const board = {
-    players,
-    playerTurn: players[0].playerId
-  };
+  const board = blankBoard();
+  board.players = players;
   processNewSet(
     {
       set: Set.TWO
@@ -135,19 +128,17 @@ it("processes a new play", () => {
 });
 
 it("sets a winner if there is a winner", () => {
-  const board = {
-    winnerPlayerId: undefined,
-    players: [
-      player(),
-      player(),
-      player(),
-      {
-        playerId: id++,
-        hand: []
-      }
-    ],
-    playerTurn: players[0].playerId
-  };
+  const board = blankBoard();
+  board.players = [
+    player(),
+    player(),
+    player(),
+    {
+      playerId: id++,
+      hand: []
+    }
+  ];
+  board.playerTurn = players[0].playerId;
   advanceWinnerIfApplicable(board);
   expect(board.winnerPlayerId).toBe(board.players[3].playerId);
 });
