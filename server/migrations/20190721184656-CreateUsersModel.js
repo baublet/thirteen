@@ -1,4 +1,4 @@
-"use strict";
+const { Sequelize } = require("sequelize");
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
@@ -8,14 +8,16 @@ module.exports = {
         primaryKey: true,
         autoIncrement: true
       },
-      createdAt: {
-        type: Sequelize.DATE
+      created_at: {
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP")
       },
-      updatedAt: {
-        type: Sequelize.DATE
+      updated_at: {
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP")
       },
       email: Sequelize.STRING,
-      passwordHash: Sequelize.STRING,
+      password_hash: Sequelize.STRING,
       username: Sequelize.STRING
     });
   },

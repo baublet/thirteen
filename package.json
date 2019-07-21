@@ -3,8 +3,11 @@
   "version": "0.0.1",
   "description": "The classic card game Thirteen",
   "scripts": {
-    "test:init": "(cd server; DATABASE_STRING=postgres://user:pass@example.com:5432/dbname sequelize db:migrate)",
-    "test": "DATABASE_STRING=postgres://user:pass@example.com:5432/dbname jest"
+    "db:reset:test": "npm run db:drop:test --force && npm run db:create:test && npm run  db:migrate:test",
+    "db:drop:test": "(cd server; NODE_ENV=test sequelize db:drop)",
+    "db:create:test": "(cd server; NODE_ENV=test sequelize db:create)",
+    "db:migrate:test": "(cd server; NODE_ENV=test sequelize db:migrate)",
+    "test": "jest"
   },
   "author": "Ryan Poe",
   "license": "ISC",

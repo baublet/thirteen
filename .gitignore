@@ -60,4 +60,5 @@ typings/
 # next.js build output
 .next
 
+server/config/secrets.ts
 server/config/config.json
