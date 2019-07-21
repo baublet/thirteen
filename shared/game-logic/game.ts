@@ -99,6 +99,7 @@ export interface ConcedePayload {
 
 export interface NewGamePayload {
   players: Player[];
+  id: number,
 }
 
 export interface GameOverPayload {

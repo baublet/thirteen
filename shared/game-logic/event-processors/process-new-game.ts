@@ -7,4 +7,5 @@ export default function processNewGame(
   gameBoard.players = eventPayload.players;
   gameBoard.playerTurn = gameBoard.players[0].playerId;
   gameBoard.losingPlayerIds = [];
+  gameBoard.id = eventPayload.id;
 }

@@ -1,6 +1,4 @@
-import buildBoard, {
-  blankBoard
-} from "./build-board";
+import buildBoard, { blankBoard } from "./build-board";
 import { Player, Set, Card, GameEventType } from "./game";
 
 let id = 0;
@@ -15,11 +13,12 @@ const player = (): Player => {
 const players: Player[] = [player(), player(), player(), player()];
 
 it("builds a board via a series of events", () => {
-  buildBoard([
+  const board = buildBoard([
     {
       type: GameEventType.NEW_GAME,
       createdAt: 1,
       payload: {
+        id: id++,
         players
       }
     },
@@ -46,4 +45,12 @@ it("builds a board via a series of events", () => {
       }
     }
   ]);
+  expect(board.events.length).toBe(4);
+  const latestBoard = board.states.pop();
+  expect(latestBoard.id).toBe(4);
+  expect(latestBoard.players.length).toBe(4);
+  expect(latestBoard.playerTurn).toBe(2);
+  expect(latestBoard.playedSets[latestBoard.playedSets.length - 1].set).toBe(
+    Set.ONE
+  );
 });

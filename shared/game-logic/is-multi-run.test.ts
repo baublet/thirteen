@@ -32,6 +32,26 @@ it("it detects triple-runs properly", () => {
   expect(multi[1]).toBe(3);
 });
 
+it("it detects quad-runs properly", () => {
+  const multi = isMultiRun([
+    Card.SPADES_3,
+    Card.CLUBS_3,
+    Card.HEARTS_3,
+    Card.DIAMONDS_3,
+    Card.SPADES_4,
+    Card.HEARTS_4,
+    Card.CLUBS_4,
+    Card.DIAMONDS_4,
+    Card.SPADES_5,
+    Card.CLUBS_5,
+    Card.DIAMONDS_5,
+    Card.HEARTS_5
+  ]);
+  expect(multi).toBeTruthy();
+  expect(multi[0]).toBe(3);
+  expect(multi[1]).toBe(4);
+});
+
 it("rejects non multirun", () => {
   expect(
     isMultiRun([
