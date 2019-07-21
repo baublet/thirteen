@@ -3,14 +3,14 @@ import db from "../config/db";
 import { isModelError } from ".";
 
 beforeEach(async () => {
-  await db.query(`TRUNCATE TABLE users`);
+  await db.query(`TRUNCATE TABLE users CASCADE`);
 });
 
 it("creates and reads a user", async () => {
   const user = await UserModel.create({
     email: "jonathan@van.ness.com",
     passwordHash: "some random password",
-    username: "JONATHAN!"
+    displayName: "JONATHAN!"
   });
   if (isModelError(user)) throw `Error creating a user: ${user.errorMessage}`;
   expect(user.email).toBe("jonathan@van.ness.com");
@@ -19,20 +19,20 @@ it("creates and reads a user", async () => {
   if (isModelError(userFromDb))
     throw `Error creating a user: ${userFromDb.errorMessage}`;
   expect(userFromDb.email).toEqual(user.email);
-  expect(userFromDb.username).toEqual(user.username);
+  expect(userFromDb.displayName).toEqual(user.displayName);
 });
 
 it("reads users", async () => {
   const user1 = await UserModel.create({
     email: "jonathan@van.ness.com",
     passwordHash: "some random password",
-    username: "JONATHAN!"
+    displayName: "JONATHAN!"
   });
 
   const user2 = await UserModel.create({
     email: "jonathan2@van.ness.com",
     passwordHash: "some random password",
-    username: "JONATHAN!"
+    displayName: "JONATHAN!"
   });
 
   if (isModelError(user1) || isModelError(user2))

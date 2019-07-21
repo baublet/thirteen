@@ -16,9 +16,16 @@ module.exports = {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP")
       },
-      email: Sequelize.STRING,
+      email: {
+        type: Sequelize.STRING,
+        unique: true
+      },
       password_hash: Sequelize.STRING,
-      username: Sequelize.STRING
+      display_name: Sequelize.STRING,
+      verified: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+      }
     });
   },
 

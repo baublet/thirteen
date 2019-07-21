@@ -5,7 +5,7 @@ import { ModelError } from ".";
 export interface User {
   id: number;
   email: string;
-  username: string;
+  displayName: string;
   passwordHash: string;
   createdAt: Date;
   updatedAt: Date;
@@ -14,7 +14,7 @@ export interface User {
 interface UserInDb {
   id: number;
   email: string;
-  username: string;
+  display_name: string;
   password_hash: string;
   created_at: Date;
   updated_at: Date;
@@ -23,7 +23,7 @@ interface UserInDb {
 const userDbModelToType = (userInDb: UserInDb): User => ({
   id: userInDb.id,
   email: userInDb.email,
-  username: userInDb.username,
+  displayName: userInDb.display_name,
   passwordHash: userInDb.password_hash,
   createdAt: userInDb.created_at,
   updatedAt: userInDb.updated_at
@@ -45,8 +45,9 @@ export default {
   create: async ({
     email,
     passwordHash,
-    username = null
+    displayName = null
   }): Promise<User | ModelError> => {
+    email = email.toLowerCase();
     const existingUsers = await db.query(
       `SELECT * FROM users WHERE email = ? LIMIT 1`,
       {
@@ -60,9 +61,9 @@ export default {
       };
     }
     const insertedUser = await db.query(
-      `INSERT INTO users (email, password_hash, username) VALUES (?, ?, ?) RETURNING *`,
+      `INSERT INTO users (email, password_hash, display_name) VALUES (?, ?, ?) RETURNING *`,
       {
-        replacements: [email, passwordHash, username],
+        replacements: [email, passwordHash, displayName],
         type: QueryTypes.INSERT
       }
     );
