@@ -1,18 +1,6 @@
-var { graphql, buildSchema } = require("graphql");
-
-// Construct a schema, using GraphQL schema language
-const schema = buildSchema(`
-  type Query {
-    hello: String
-  }
-`);
-
-// The root provides a resolver function for each API endpoint
-const resolvers = {
-  hello: () => {
-    return "Hello world!";
-  }
-};
+import { graphql } from "graphql";
+import resolvers from "./resolvers";
+import schema from "./schema";
 
 export default async function graphqlEntry(
   query,
