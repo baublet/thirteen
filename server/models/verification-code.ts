@@ -8,11 +8,32 @@ export interface VerificationCode {
   code: string;
 }
 
+const findByCodesOrIds = async ({
+  ids = undefined,
+  codes = undefined
+}: {
+  ids?: number[];
+  codes?: string[];
+}): Promise<VerificationCode | ModelError> => {
+  if ((!ids && !codes) || (ids && !ids.length) || (codes && !codes.length)) {
+    return {
+      errorMessage: ""
+    };
+  }
+  const loadedCodes = await db.query(
+    `SELECT * FROM verification_codes WHERE code IN (?) OR id IN (?)`,
+    {
+      replacements: [codes || [""], ids || [0]],
+      type: QueryTypes.SELECT
+    }
+  );
+  return loadedCodes;
+};
+
 export default {
   create: async (): Promise<VerificationCode | ModelError> => {
     let codeIsUnique = false;
     let code = generateCode();
-    console.log(code);
     while (!codeIsUnique) {
       const existingCode = await db.query(
         `SELECT * FROM verification_codes WHERE code = ? LIMIT 1`,
@@ -21,8 +42,7 @@ export default {
           type: QueryTypes.SELECT
         }
       );
-      console.log(existingCode)
-      if(existingCode.length == 0) {
+      if (existingCode.length == 0) {
         codeIsUnique = true;
       } else {
         code = generateCode();
@@ -35,8 +55,19 @@ export default {
         type: QueryTypes.INSERT
       }
     );
-    console.log(insertedCode);
     return insertedCode[0][0];
   },
-  findByCodeOrId: async ({ id = undefined, code = undefined }) => {}
+  findByCodesOrIds,
+  findById: async ({
+    id
+  }: {
+    id: number;
+  }): Promise<VerificationCode | ModelError> =>
+    (await findByCodesOrIds({ ids: [id] }))[0],
+  findByCode: async ({
+    code
+  }: {
+    code: string;
+  }): Promise<VerificationCode | ModelError> =>
+    (await findByCodesOrIds({ codes: [code] }))[0]
 };
