@@ -62,16 +62,12 @@ export enum Set {
   THREE = "three",
   FOUR = "four",
   RUN = "run",
-  DOUBLE_RUN = "double_run",
-  TRIPLE_RUN = "triple_run",
-  QUADRUPLE_RUN = "quadruple_run"
+  MULTI_RUN = "multi-run"
 }
 
 export enum Bomb {
   FOUR = Set.FOUR,
-  DOUBLE_RUN = Set.DOUBLE_RUN,
-  TRIPLE_RUN = Set.TRIPLE_RUN,
-  QUADRUPLE_RUN = Set.QUADRUPLE_RUN
+  MULTI_RUN = Set.MULTI_RUN
 }
 
 export interface Play {

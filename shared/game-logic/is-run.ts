@@ -1,9 +1,9 @@
-import { Card, Set } from "./game";
+import { Card } from "./game";
 import { runIndex } from "./data/card-indexes";
 
 const MINIMUM_RUN_LENGTH = 3;
 
-export default function isRun(cards): false | number {
+export default function isRun(cards: Card[]): false | number {
   const firstIndex: number = ((firstCard: Card) => {
     for (let i = 0; i < runIndex.length; i++) {
       if (runIndex[i].includes(firstCard)) {
