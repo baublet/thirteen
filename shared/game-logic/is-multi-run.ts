@@ -1,27 +1,31 @@
 import { Card } from "./game";
-import { runIndex } from "./data/card-indexes";
+import cardIsSameNumberAs from "./cards-are-same-number"
 import isRun from "./is-run";
 
 export default function isMultiRun(
-  originalCards: Card[]
+  cards: Card[]
 ): false | [number, number] {
-  const cards = originalCards.slice(0);
   // First, get all multiples
   const multiples: Card[][] = [];
-  while (cards.length) {
-    const card = cards.shift();
+  const cardsUsed: Card[] = [];
+  cards.forEach(card => {
+    if (cardsUsed.includes(card)) {
+      return;
+    }
     const multiple = [card];
+    cardsUsed.push(card);
     for (let i = 0; i < cards.length; i++) {
+      if (cardsUsed.includes(cards[i])) {
+        continue;
+      }
       if (cardIsSameNumberAs(card, cards[i])) {
-        const cardToAdd = cards.splice(i, 1);
-        console.log(`Adding ${cardToAdd} to ${JSON.stringify(multiple)}`)
-        multiple.push(cardToAdd[0]);
+        const cardToAdd = cards.slice(i, i + 1)[0];
+        multiple.push(cardToAdd);
+        cardsUsed.push(cardToAdd);
       }
     }
     multiples.push(multiple);
-  }
-
-  console.log(multiples);
+  })
 
   if (!multiples.length) {
     return false;
@@ -38,7 +42,7 @@ export default function isMultiRun(
 
   // Now just grab the first item from each array and run it through our
   // isRun function!
-  const multiplesAsRun = multiples.map(multiple => multiple.pop());
+  const multiplesAsRun = multiples.map(multiple => multiple[0]);
   multiplesAsRun.sort();
 
   const run = isRun(multiplesAsRun);
@@ -47,17 +51,4 @@ export default function isMultiRun(
   }
 
   return [run, lengths];
-}
-
-function cardIsSameNumberAs(card1: Card, card2: Card): boolean {
-  for (let i = 0; i < runIndex.length; i++) {
-    if (!runIndex[i].includes(card1)) {
-      continue;
-    }
-    if (runIndex[i].includes(card2)) {
-      return true;
-    }
-    return false;
-  }
-  return false;
 }
