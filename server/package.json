@@ -1,7 +1,9 @@
 {
   "main": "index.ts",
   "scripts": {},
-  "dependencies": {},
+  "dependencies": {
+    "graphql": "^14.4.2"
+  },
   "devDependencies": {},
   "private": true
 }
