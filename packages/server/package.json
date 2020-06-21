@@ -1,5 +1,5 @@
 {
-  "name": "server",
+  "name": "@thirteen/server",
   "main": "index.ts",
   "dependencies": {
     "graphql": "^14.4.2",
@@ -7,10 +7,10 @@
     "pg": "^7.18.2",
     "sqlite3": "^4.2.0"
   },
-  "scripts": {
-    "migration:create": "knex migrate:make -x ts --"
-  },
   "devDependencies": {
     "@types/knex": "^0.16.1"
+  },
+  "scripts": {
+    "migration:create": "knex migrate:make -x ts --"
   }
 }

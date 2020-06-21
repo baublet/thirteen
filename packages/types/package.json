@@ -1,4 +1,4 @@
 {
-  "name": "types",
+  "name": "@thirteen/types",
   "main": "src/index.ts"
 }

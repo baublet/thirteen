@@ -4,22 +4,18 @@ const tableName: string = "users";
 
 export interface User {
   id: number;
-  username: string;
   email: string;
 }
 
 export async function create({
   connection,
-  username,
   email,
 }: {
   connection: Connection;
-  username: string;
   email: string;
 }): Promise<User> {
   return connection
     .insert({
-      username,
       email,
     })
     .into(tableName)
@@ -47,29 +43,29 @@ export async function findById({
   return ids.map((id) => users[id] || null);
 }
 
-export async function findByUsername({
-  usernames,
+export async function findByEmail({
+  emails,
   connection,
 }: {
-  usernames: string[];
+  emails: string[];
   connection: Connection;
 }): Promise<(User | null)[]> {
   const results: User[] = await connection
     .select("*")
-    .from("tableName")
-    .whereIn("username", usernames)
-    .limit(usernames.length);
+    .from(tableName)
+    .whereIn("email", emails)
+    .limit(emails.length);
   const users: Record<string, User> = {};
 
   for (const user of results) {
-    users[user.username] = user;
+    users[user.email] = user;
   }
 
-  return usernames.map((name) => users[name] || null);
+  return emails.map((email) => users[email] || null);
 }
 
 export default {
   create,
   findById,
-  findByUsername,
+  findByEmail,
 };

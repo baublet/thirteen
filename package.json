@@ -1,9 +1,9 @@
 {
   "name": "thirteen",
   "description": "The classic card game Thirteen",
+  "private": true,
   "scripts": {
-    "postinstall": "lerna run prepublish",
-    "test": "jest"
+    "test": "NODE_ENV=test ts-node ./test-setup && jest"
   },
   "author": "Ryan Poe",
   "license": "ISC",
@@ -14,9 +14,10 @@
     "lerna": "^3.22.1",
     "lodash.clonedeep": "^4.5.0",
     "ts-jest": "^26.1.0",
+    "ts-node": "^8.10.2",
     "typescript": "^3.9.4"
   },
-  "dependencies": {
-    "knex": "^0.21.1"
-  }
+  "workspaces": [
+    "packages"
+  ]
 }
