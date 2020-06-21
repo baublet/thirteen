@@ -1,24 +1,20 @@
 {
   "name": "thirteen",
-  "version": "0.0.1",
   "description": "The classic card game Thirteen",
   "scripts": {
-    "db:reset:test": "npm run db:drop:test --force && npm run db:create:test && npm run  db:migrate:test",
-    "db:drop:test": "(cd server; NODE_ENV=test sequelize db:drop)",
-    "db:create:test": "(cd server; NODE_ENV=test sequelize db:create)",
-    "db:migrate:test": "(cd server; NODE_ENV=test sequelize db:migrate)",
+    "postinstall": "lerna run prepublish",
     "test": "jest"
   },
   "author": "Ryan Poe",
   "license": "ISC",
   "devDependencies": {
-    "@types/jest": "^24.0.15",
+    "@types/jest": "^26.0.0",
     "@types/node": "^12.6.2",
-    "jest": "^24.8.0",
-    "ts-jest": "^24.0.2",
-    "typescript": "^3.5.3"
+    "jest": "^26.0.1",
+    "lerna": "^3.22.1",
+    "lodash.clonedeep": "^4.5.0",
+    "ts-jest": "^26.1.0",
+    "typescript": "^3.9.4"
   },
-  "dependencies": {
-    "lodash.clonedeep": "^4.5.0"
-  }
+  "dependencies": {}
 }
