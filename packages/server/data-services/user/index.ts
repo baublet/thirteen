@@ -1,4 +1,5 @@
 import { create } from "./create";
+import { dataLoaderFactory } from "./data-loader-factory";
 import { findByEmail } from "./find-by-email";
 import { findById } from "./find-by-id";
 
@@ -14,4 +15,5 @@ export default {
   create,
   findByEmail,
   findById,
+  dataLoaderFactory,
 };

@@ -3,12 +3,12 @@ import { User, tableName } from "./index";
 
 export async function findById({
   ids,
-  transaction,
+  connection,
 }: {
   ids: number[];
-  transaction: Connection;
+  connection: Connection;
 }): Promise<(User | null)[]> {
-  const results: User[] = await transaction
+  const results: User[] = await connection
     .select("*")
     .from(tableName)
     .whereIn("id", ids)

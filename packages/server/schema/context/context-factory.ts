@@ -4,6 +4,8 @@ import { ulid } from "ulid";
 import { getConnection, Connection } from "../../config";
 import { log } from "../../utilities";
 
+import { loadersFactory, Loaders } from "./loaders-factory";
+
 export interface Context {
   request: {
     id: string;
@@ -13,6 +15,7 @@ export interface Context {
   };
   response: Response;
   getConnection: () => Promise<Connection>;
+  loaders: Loaders;
 }
 
 export function contextFactory({
@@ -24,6 +27,15 @@ export function contextFactory({
 }): Context {
   const requestId = ulid();
   let connection: Connection;
+
+  const getDbConnection = async () => {
+    if (!connection) {
+      log.info(`Providing DB connection for request ID ${requestId}`);
+      connection = await getConnection();
+    }
+    return connection;
+  };
+
   return {
     request: {
       id: requestId,
@@ -32,12 +44,7 @@ export function contextFactory({
       protocol: req.protocol,
     },
     response: res,
-    getConnection: async () => {
-      if (!connection) {
-        log.info(`Providing DB connection for request ID ${requestId}`);
-        connection = await getConnection();
-      }
-      return connection;
-    },
+    getConnection: getDbConnection,
+    loaders: loadersFactory(getDbConnection),
   };
 }
