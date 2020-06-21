@@ -18,12 +18,8 @@ export async function create({
     .insert({
       email,
     })
-    .returning("*")
     .into(tableName);
   // SQLite doesn't support returning, so we need to do a last insertion ID check
-  if (typeof insertion[0] !== "number") {
-    return insertion[0];
-  }
   const results = await transaction
     .select("*")
     .from(tableName)
