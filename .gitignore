@@ -6,7 +6,8 @@ yarn-debug.log*
 yarn-error.log*
 
 # sqlite databases
-packages/server/test.db*
+packages/server/test.db
+packages/server/test.db-journal
 
 # Runtime data
 pids
