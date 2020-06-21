@@ -19,7 +19,8 @@ export async function create({
       email,
     })
     .into(tableName);
-  // SQLite doesn't support returning, so we need to do a last insertion ID check
+  // SQLite doesn't support RETURNING. So we have to use this syntax that's
+  // provided by knex where it returns an array of inserted IDs.
   const results = await transaction
     .select("*")
     .from(tableName)

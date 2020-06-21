@@ -3,7 +3,9 @@
   "description": "The classic card game Thirteen",
   "private": true,
   "scripts": {
-    "test": "NODE_ENV=test ts-node ./test-setup && jest"
+    "test": "NODE_ENV=test ts-node ./test-setup && jest",
+    "start:server": "ts-node --transpile-only packages/server/serve.ts",
+    "develop": "PORT=8888 yarn start:server"
   },
   "author": "Ryan Poe",
   "license": "ISC",

@@ -1,0 +1,12 @@
+type User {
+  id: String!
+  email: String!
+}
+
+type Pong {
+  response: String!
+}
+
+type Query {
+  ping: Pong!
+}
