@@ -1,10 +1,10 @@
-import { getConnection } from "../config";
+import { getTransaction } from "../config";
 import User from "./user";
 
 it("creates and returns a user", async () => {
   const result = await User.create({
-    connection: await getConnection(),
-    email: "test@test.com"
+    transaction: await getTransaction(),
+    email: "test@test.com",
   });
-  expect(result).toEqual(1);
+  expect(result.email).toEqual("test@test.com");
 });

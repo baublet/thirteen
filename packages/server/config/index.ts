@@ -1,1 +1,1 @@
-export { getConnection, Connection } from "./db";
+export { Connection, Transaction, getTransaction } from "./db";

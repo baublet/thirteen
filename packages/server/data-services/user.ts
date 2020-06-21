@@ -1,4 +1,4 @@
-import { Connection } from "../config";
+import { Transaction } from "../config";
 
 const tableName: string = "users";
 
@@ -8,28 +8,38 @@ export interface User {
 }
 
 export async function create({
-  connection,
+  transaction,
   email,
 }: {
-  connection: Connection;
+  transaction: Transaction;
   email: string;
 }): Promise<User> {
-  return connection
+  const insertion = await transaction
     .insert({
       email,
     })
-    .into(tableName)
-    .returning("*") as any;
+    .returning("*")
+    .into(tableName);
+  // SQLite doesn't support returning, so we need to do a last insertion ID check
+  if (typeof insertion[0] !== "number") {
+    return insertion[0];
+  }
+  const results = await transaction
+    .select("*")
+    .from(tableName)
+    .where("id", insertion[0])
+    .limit(1);
+  return results[0];
 }
 
 export async function findById({
   ids,
-  connection,
+  transaction,
 }: {
   ids: number[];
-  connection: Connection;
+  transaction: Transaction;
 }): Promise<(User | null)[]> {
-  const results: User[] = await connection
+  const results: User[] = await transaction
     .select("*")
     .from(tableName)
     .whereIn("id", ids)
@@ -45,12 +55,12 @@ export async function findById({
 
 export async function findByEmail({
   emails,
-  connection,
+  transaction,
 }: {
   emails: string[];
-  connection: Connection;
+  transaction: Transaction;
 }): Promise<(User | null)[]> {
-  const results: User[] = await connection
+  const results: User[] = await transaction
     .select("*")
     .from(tableName)
     .whereIn("email", emails)

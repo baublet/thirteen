@@ -5,6 +5,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# sqlite databases
+packages/server/test.db*
+
 # Runtime data
 pids
 *.pid
