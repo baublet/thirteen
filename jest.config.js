@@ -1,5 +1,5 @@
 module.exports = {
-  roots: ['./client-mobile', './server', './shared'],
+  roots: ['./packages'],
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
   },

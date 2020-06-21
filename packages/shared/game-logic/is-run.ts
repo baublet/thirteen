@@ -27,7 +27,7 @@ export default function isRun(cards: Card[]): false | number {
       }
     }
     // If we can't find any cards that continue this run and we haven't yet hit
-    // our minimum run ammount, then we aren't in a run!
+    // our minimum run amount, then we aren't in a run!
     if (!partOfNextNumber && setSpan < MINIMUM_RUN_LENGTH) {
       return false;
     }

@@ -16,5 +16,7 @@
     "ts-jest": "^26.1.0",
     "typescript": "^3.9.4"
   },
-  "dependencies": {}
+  "dependencies": {
+    "knex": "^0.21.1"
+  }
 }

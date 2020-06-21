@@ -1,15 +1,18 @@
-import { Sequelize } from "sequelize";
+import knex from "knex";
+import { development, test } from "../knexfile";
 
-const secrets = require("./config.json");
-const config = secrets[process.env.NODE_ENV];
+export type Connection = knex;
 
-export default new Sequelize(
-  config.database,
-  config.username,
-  config.password,
-  {
-    host: config.host,
-    dialect: config.dialect,
-    logging: false
+let db: knex;
+
+export async function getConnection(): Promise<Connection> {
+  if (!db) {
+    if (process.env.NODE_ENV === "test") {
+      db = await test.getConnection();
+    } else {
+      db = await development.getConnection();
+    }
   }
-);
+
+  return db;
+}
