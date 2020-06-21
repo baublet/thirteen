@@ -1,39 +1,35 @@
 import { resolve } from "path";
 import { readFile } from "fs";
 import { Express } from "express";
-import { buildSchema, GraphQLSchema } from "graphql";
-import graphqlHTTP from "express-graphql";
+import { ApolloServer } from "apollo-server-express";
 
 import { log } from "../utilities";
 import { root } from "./resolvers";
+import { contextFactory } from "./context";
 
 const schemaFile = resolve(__dirname, "schema.graphql");
 
-export async function createSchema(): Promise<GraphQLSchema> {
+export async function createSchema(): Promise<string> {
   return new Promise((resolve, reject) => {
     log.info(`Reading schema from ${schemaFile}`);
     readFile(schemaFile, (err, data) => {
       if (err) return reject(err);
-      const schemaString = data.toString();
-      log.info(`Building schema...`);
-      const schema = buildSchema(schemaString);
-      resolve(schema);
+      resolve(data.toString());
     });
   });
 }
 
-export async function middleware(app: Express) {
-  const schema = await createSchema();
-  const graphiql = Boolean(process.env.GRAPHIQL) || true;
+export async function middleware(app: Express): Promise<void> {
+  const typeDefs = await createSchema();
+  const playground = Boolean(process.env.GRAPHQL_PLAYGROUND) || true;
   log.info(
-    `Starting GQL server ${graphiql ? "with" : "WITHOUT"} GraphQL explorer`
+    `Starting GQL server ${playground ? "WITH" : "WITHOUT"} GraphQL Playground`
   );
-  app.use(
-    "/graphql",
-    graphqlHTTP({
-      schema,
-      rootValue: root,
-      graphiql,
-    })
-  );
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers: root,
+    context: contextFactory,
+    playground
+  });
+  server.applyMiddleware({ app });
 }

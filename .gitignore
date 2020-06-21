@@ -1,13 +1,15 @@
+# sqlite databases
+packages/server/test.db
+packages/server/test.db-journal
+packages/server/development.db
+packages/server/development.db-journal
+
 # Logs
 logs
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-# sqlite databases
-packages/server/test.db
-packages/server/test.db-journal
 
 # Runtime data
 pids
@@ -60,9 +62,3 @@ typings/
 
 # dotenv environment variables file
 .env
-
-# next.js build output
-.next
-
-server/config/secrets.ts
-server/config/config.json

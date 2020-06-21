@@ -32,6 +32,13 @@ const test = {
 };
 
 const development = {
+  ...test,
+  connection: {
+    filename: path.join(__dirname, "development.db"),
+  },
+};
+
+const production = {
   client: "pg",
   connection: { user: "thirteen", database: "thirteen" },
   migrations: {
@@ -53,4 +60,5 @@ const development = {
 module.exports = {
   test,
   development,
+  production,
 };

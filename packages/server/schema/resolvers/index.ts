@@ -1,5 +1,8 @@
-import { ping } from "./ping";
+import { PingResponse } from "./ping-response";
 
 export const root = {
-  ping,
+  PingResponse,
+  Query: {
+    ping: () => ({}),
+  },
 };

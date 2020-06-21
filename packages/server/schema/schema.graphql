@@ -3,10 +3,12 @@ type User {
   email: String!
 }
 
-type Pong {
+type PingResponse {
   response: String!
+  requestId: String!
+  databaseHealth: String!
 }
 
 type Query {
-  ping: Pong!
+  ping: PingResponse!
 }
