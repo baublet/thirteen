@@ -4,7 +4,7 @@ import { ulid } from "ulid";
 import { getConnection, Connection } from "../../config";
 import { log } from "../../utilities";
 
-import { loadersFactory, Loaders } from "./loaders-factory";
+import { loadersFactory } from "./loaders-factory";
 
 export interface Context {
   request: {
@@ -15,7 +15,7 @@ export interface Context {
   };
   response: Response;
   getConnection: () => Promise<Connection>;
-  loaders: Loaders;
+  loaders: any;
 }
 
 export function contextFactory({

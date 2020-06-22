@@ -10,6 +10,9 @@ const test = {
   migrations: {
     directory: path.resolve(__dirname, "migrations"),
   },
+  seeds: {
+    directory: path.resolve(__dirname, "seeds", "test"),
+  },
   getConnection: async () => {
     return knex({
       client: test.client,
@@ -35,6 +38,9 @@ const development = {
   ...test,
   connection: {
     filename: path.join(__dirname, "development.db"),
+  },
+  seeds: {
+    directory: path.resolve(__dirname, "seeds", "development"),
   },
 };
 

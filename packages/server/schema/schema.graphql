@@ -7,6 +7,7 @@ type PingResponse {
   response: String!
   requestId: String!
   databaseHealth: String!
+  databaseVersion: String!
 }
 
 type Query {

@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "test": "NODE_ENV=test ts-node ./test-setup && jest",
-    "start:server": "ts-node --transpile-only packages/server/serve.ts",
-    "develop": "PORT=8888 yarn start:server"
+    "start:server": "(cd packages/server; yarn start)",
+    "develop": "(cd packages/server; yarn develop)"
   },
   "author": "Ryan Poe",
   "license": "ISC",
@@ -15,7 +15,6 @@
     "jest": "^26.0.1",
     "lodash.clonedeep": "^4.5.0",
     "ts-jest": "^26.1.0",
-    "ts-node": "^8.10.2",
     "typescript": "^3.9.4"
   },
   "workspaces": [
