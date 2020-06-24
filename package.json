@@ -5,7 +5,7 @@
   "scripts": {
     "test": "NODE_ENV=test ts-node ./test-setup && jest",
     "start:server": "(cd packages/server; yarn start)",
-    "develop": "(cd packages/server; yarn develop)"
+    "develop": "(cd server; yarn develop)"
   },
   "author": "Ryan Poe",
   "license": "ISC",

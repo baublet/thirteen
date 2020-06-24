@@ -1,1 +1,3 @@
-export { start } from "./application";
+import { home } from "./home";
+
+export const middleware = [home];
