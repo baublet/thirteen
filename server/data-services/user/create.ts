@@ -1,5 +1,5 @@
 import { Transaction } from "../../config";
-import { User, tableName } from "./index"
+import { UserEntity, tableName } from "./index"
 
 export async function create({
   transaction,
@@ -7,7 +7,7 @@ export async function create({
 }: {
   transaction: Transaction;
   email: string;
-}): Promise<User> {
+}): Promise<UserEntity> {
   const insertion = await transaction
     .insert({
       email,

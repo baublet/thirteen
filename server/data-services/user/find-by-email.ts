@@ -1,5 +1,5 @@
 import { Connection } from "../../config";
-import { User, tableName } from "./index"
+import { tableName, UserEntity } from "./index"
 
 export async function findByEmail({
   emails,
@@ -7,13 +7,13 @@ export async function findByEmail({
 }: {
   emails: string[];
   transaction: Connection;
-}): Promise<(User | null)[]> {
-  const results: User[] = await transaction
+}): Promise<(UserEntity | null)[]> {
+  const results: UserEntity[] = await transaction
     .select("*")
     .from(tableName)
     .whereIn("email", emails)
     .limit(emails.length);
-  const users: Record<string, User> = {};
+  const users: Record<string, UserEntity> = {};
 
   for (const user of results) {
     users[user.email] = user;

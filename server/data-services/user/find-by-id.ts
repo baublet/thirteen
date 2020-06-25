@@ -1,5 +1,5 @@
 import { Connection } from "../../config";
-import { User, tableName } from "./index";
+import { tableName, UserEntity } from "./index";
 
 export async function findById({
   ids,
@@ -7,13 +7,13 @@ export async function findById({
 }: {
   ids: number[];
   connection: Connection;
-}): Promise<(User | null)[]> {
-  const results: User[] = await connection
+}): Promise<(UserEntity | null)[]> {
+  const results: UserEntity[] = await connection
     .select("*")
     .from(tableName)
     .whereIn("id", ids)
     .limit(ids.length);
-  const users: Record<number, User> = {};
+  const users: Record<number, UserEntity> = {};
 
   for (const user of results) {
     users[user.id] = user;

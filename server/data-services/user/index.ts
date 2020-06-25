@@ -3,7 +3,7 @@ import { dataLoaderFactory } from "./data-loader-factory";
 import { findByEmail } from "./find-by-email";
 import { findById } from "./find-by-id";
 
-export interface User {
+export interface UserEntity {
   id: number;
   email: string;
 }

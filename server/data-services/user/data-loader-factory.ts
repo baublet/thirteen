@@ -1,12 +1,12 @@
 import DataLoader from "dataloader";
 
-import { User } from "./index";
+import { UserEntity } from "./index";
 import { findById } from "./find-by-id";
 import { Connection } from "../../config";
 
 export function dataLoaderFactory(
   getConnection: () => Promise<Connection>
-): DataLoader<number, User | null> {
+): DataLoader<number, UserEntity | null> {
   return new DataLoader(async (ids) =>
     findById({ ids: ids as number[], connection: await getConnection() })
   );

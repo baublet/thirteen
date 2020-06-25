@@ -6,4 +6,4 @@ export const log = {
   warn,
 };
 
-export { getKey, jwtOptions } from "./authentication";
+export { getKey, jwtOptions, decodeJwt } from "./authentication";
