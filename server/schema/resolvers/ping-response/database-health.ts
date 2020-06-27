@@ -13,7 +13,7 @@ export async function databaseHealth(
   context: Context
 ): Promise<"red" | "green"> {
   try {
-    const connection = await context.getConnection();
+    const connection = await context.connection;
     if (!connection as any) {
       log.error(
         "Unknown error: falsy connection returned from getConnection()"

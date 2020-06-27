@@ -5,9 +5,9 @@ import { findById } from "./find-by-id";
 import { Connection } from "../../config";
 
 export function dataLoaderFactory(
-  getConnection: () => Promise<Connection>
+  connection: Promise<Connection>
 ): DataLoader<number, UserEntity | null> {
   return new DataLoader(async (ids) =>
-    findById({ ids: ids as number[], connection: await getConnection() })
+    findById({ ids: ids as number[], connection: await connection })
   );
 }

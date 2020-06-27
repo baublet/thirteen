@@ -10,7 +10,7 @@ export interface Loaders {
 type DataService = typeof User;
 
 export function loadersFactory(
-  getConnection: () => Promise<Connection>
+  connection: Promise<Connection>
 ): Loaders {
   const loaders: Record<string, any> = {};
 
@@ -19,7 +19,7 @@ export function loadersFactory(
     service: T
   ): DataLoader<number, T> {
     if (!loaders[loader])
-      loaders[loader] = service.dataLoaderFactory(getConnection);
+      loaders[loader] = service.dataLoaderFactory(connection);
     return loaders[loader];
   }
 

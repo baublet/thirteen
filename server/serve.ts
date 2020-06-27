@@ -2,10 +2,8 @@ import path from "path";
 import fs from "fs";
 import env from "dotenv";
 
-import { start } from "./express";
-
-const envPath = path.resolve(__dirname, "..", "..", ".env");
-const exampleEnvPath = path.resolve(__dirname, "..", "..", ".env.example");
+const envPath = path.resolve(__dirname, ".env");
+const exampleEnvPath = path.resolve(__dirname, ".env.example");
 
 if (fs.existsSync(envPath)) {
   env.config({ path: envPath });
@@ -17,6 +15,5 @@ if (fs.existsSync(envPath)) {
   );
 }
 
-env.config({ path: envPath || exampleEnvPath });
-
+import { start } from "./express";
 (async () => await start())();

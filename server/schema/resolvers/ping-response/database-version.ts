@@ -10,7 +10,7 @@ export async function databaseVersion(
   context: Context
 ): Promise<"none" | "unknown" | string> {
   try {
-    const connection = await context.getConnection();
+    const connection = await context.connection;
     return await connection.migrate.currentVersion();
   } catch (e) {
     log.error("Database error!", e);

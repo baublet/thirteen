@@ -2,9 +2,10 @@ import { Request, Response } from "express";
 import { ulid } from "ulid";
 
 import { getConnection, Connection } from "../../config";
-import { log, getKey } from "../../utilities";
+import { UserEntity } from "../../data-services";
 
 import { loadersFactory } from "./loaders-factory";
+import { currentUser } from "./current-user";
 
 export interface Context {
   request: {
@@ -14,8 +15,9 @@ export interface Context {
     protocol: string;
   };
   response: Response;
-  getConnection: () => Promise<Connection>;
+  connection: Promise<Connection>;
   loaders: any;
+  currentUser: Promise<UserEntity | undefined>;
 }
 
 export function contextFactory({
@@ -26,15 +28,7 @@ export function contextFactory({
   res: Response;
 }): Context {
   const requestId = ulid();
-  let connection: Connection;
-
-  const getDbConnection = async () => {
-    if (!connection) {
-      log.info(`Providing DB connection for request ID ${requestId}`);
-      connection = await getConnection();
-    }
-    return connection;
-  };
+  const connection: Promise<Connection> = getConnection(requestId);
 
   return {
     request: {
@@ -44,7 +38,8 @@ export function contextFactory({
       protocol: req.protocol,
     },
     response: res,
-    getConnection: getDbConnection,
-    loaders: loadersFactory(getDbConnection),
+    connection,
+    loaders: loadersFactory(connection),
+    currentUser: currentUser(req)
   };
 }
