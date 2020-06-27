@@ -40,6 +40,6 @@ export function contextFactory({
     response: res,
     connection,
     loaders: loadersFactory(connection),
-    currentUser: currentUser(req)
+    currentUser: currentUser(req, connection)
   };
 }

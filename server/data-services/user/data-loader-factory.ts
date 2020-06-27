@@ -8,6 +8,6 @@ export function dataLoaderFactory(
   connection: Promise<Connection>
 ): DataLoader<number, UserEntity | null> {
   return new DataLoader(async (ids) =>
-    findById({ ids: ids as number[], connection: await connection })
+    findById({ ids: ids as number[], db: await connection })
   );
 }

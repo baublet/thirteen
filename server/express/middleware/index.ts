@@ -1,4 +1,4 @@
 import { home } from "./home";
-import { login } from "./login";
+import { authentication } from "./authentication";
 
-export const middleware = [home, login];
+export const middleware = [authentication, home];

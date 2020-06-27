@@ -1,19 +1,25 @@
 import { create } from "./create";
 import { dataLoaderFactory } from "./data-loader-factory";
-import { findByEmail } from "./find-by-email";
 import { findById } from "./find-by-id";
+import { findByProviderId } from "./find-by-provider-id";
+
+export enum UserProvider {
+  OKTA = "okta",
+}
 
 export interface UserEntity {
   id: number;
-  email: string;
+  provider: UserProvider;
+  providerId: string;
+  providerData: Record<string, string | number>;
 }
 
 export const tableName: string = "users";
 
-export default {
+export const User = {
   tableName,
   create,
-  findByEmail,
   findById,
   dataLoaderFactory,
+  findByProviderId,
 };

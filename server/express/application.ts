@@ -7,15 +7,15 @@ import { middleware } from "./middleware";
 export async function start() {
   const app = express();
 
-  log.info("Applying middleware: GraphQL Server");
-  await gqlMiddleware(app);
-
   await Promise.all(
     middleware.map(async (middleware) => {
       log.info("Applying middleware:", middleware.name);
       await middleware(app);
     })
   );
+
+  log.info("Applying middleware: GraphQL Server");
+  await gqlMiddleware(app);
 
   const port = process.env.PORT || 80;
   app.listen(port, () => {

@@ -1,6 +1,6 @@
 type User {
   id: String!
-  email: String!
+  username: String!
 }
 
 type PingResponse {

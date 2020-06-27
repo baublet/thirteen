@@ -1,11 +1,14 @@
 import { getConnection } from "../../config";
 import { create } from "./create";
+import { UserProvider } from ".";
 
 it("creates and returns a user", async () => {
-  const connection = await getConnection();
+  const connection = await getConnection("test");
   const result = await create({
-    transaction: await connection.transaction(),
-    email: "test@test.com",
+    db: connection,
+    provider: UserProvider.OKTA,
+    providerId: "providerId",
+    providerData: "{\"test\":123}",
   });
-  expect(result.email).toEqual("test@test.com");
+  expect(result.providerData).toEqual("{\"test\":123}");
 });

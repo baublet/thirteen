@@ -1,1 +1,1 @@
-export { default as User, UserEntity } from "./user";
+export { User, UserEntity, UserProvider } from "./user";

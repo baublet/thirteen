@@ -1,22 +1,28 @@
-import { Transaction } from "../../config";
-import { UserEntity, tableName } from "./index"
+import { Connection, Transaction } from "../../config";
+import { UserEntity, tableName, UserProvider } from "./index";
 
 export async function create({
-  transaction,
-  email,
+  db,
+  provider,
+  providerId,
+  providerData,
 }: {
-  transaction: Transaction;
-  email: string;
+  db: Connection | Transaction;
+  provider: UserProvider;
+  providerId: string;
+  providerData: string;
 }): Promise<UserEntity> {
-  const insertion = await transaction
+  const insertion = await db
     .insert({
-      email,
+      providerData,
+      provider,
+      providerId,
     })
     .into(tableName);
   // SQLite doesn't support RETURNING. So we have to use this syntax that's
   // provided by knex where it returns an array with one element: the inserted
   // ID.
-  const results = await transaction
+  const results = await db
     .select("*")
     .from(tableName)
     .where("id", insertion[0])

@@ -5,5 +5,3 @@ export const log = {
   error,
   warn,
 };
-
-export { getKey, jwtOptions, decodeJwt } from "./authentication";

@@ -1,14 +1,14 @@
-import { Connection } from "../../config";
+import { Connection, Transaction } from "../../config";
 import { tableName, UserEntity } from "./index";
 
 export async function findById({
   ids,
-  connection,
+  db,
 }: {
   ids: number[];
-  connection: Connection;
+  db: Transaction | Connection;
 }): Promise<(UserEntity | null)[]> {
-  const results: UserEntity[] = await connection
+  const results: UserEntity[] = await db
     .select("*")
     .from(tableName)
     .whereIn("id", ids)

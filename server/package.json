@@ -3,6 +3,7 @@
   "main": "index.ts",
   "license": "ISC",
   "dependencies": {
+    "@okta/oidc-middleware": "^4.0.1",
     "@types/express": "^4.17.6",
     "@types/safe-json-stringify": "^1.1.1",
     "apollo-server-express": "^2.15.0",
@@ -10,11 +11,10 @@
     "dataloader": "^2.0.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "express-jwt": "^5.3.3",
+    "express-session": "^1.17.1",
     "graphql": "^15.1.0",
     "graphql-tools": "^6.0.10",
-    "jsonwebtoken": "^8.5.1",
-    "jwks-rsa": "^1.8.1",
+    "jest": "^26.1.0",
     "knex": "^0.21.1",
     "pg": "^7.18.2",
     "safe-json-stringify": "^1.2.0",
@@ -23,8 +23,13 @@
     "ulid": "^2.3.0"
   },
   "devDependencies": {
+    "@types/express-session": "^1.17.0",
+    "@types/jest": "^26.0.3",
     "@types/jsonwebtoken": "^8.5.0",
-    "@types/knex": "^0.16.1"
+    "@types/knex": "^0.16.1",
+    "@types/node": "^14.0.14",
+    "ts-jest": "^26.1.1",
+    "typescript": "^3.9.5"
   },
   "scripts": {
     "migration:create": "knex migrate:make -x ts",
@@ -33,6 +38,9 @@
     "seed:dev:create": "NODE_ENV=development knex seed:make",
     "seed:dev": "NODE_ENV=development knex seed:run",
     "start": "ts-node --transpile-only serve.ts",
-    "develop": "PORT=8888 yarn start"
+    "develop": "PORT=8888 yarn start",
+    "knex": "ts-node --transpile-only ./node_modules/.bin/knex",
+    "db:reset": "rm -rf ./develop.db ./test.db && kne migrate:latest",
+    "test": "rm -rf ./test.db && NODE_ENV=test yarn knex migrate:latest && jest"
   }
 }

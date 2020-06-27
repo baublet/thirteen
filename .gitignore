@@ -1,8 +1,8 @@
 # sqlite databases
-packages/server/test.db
-packages/server/test.db-journal
-packages/server/development.db
-packages/server/development.db-journal
+test.db
+test.db-journal
+development.db
+development.db-journal
 
 # Logs
 logs

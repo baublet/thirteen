@@ -29,7 +29,11 @@ export async function middleware(app: Express): Promise<void> {
     typeDefs,
     resolvers: root,
     context: contextFactory,
-    playground,
+    playground: {
+      settings: {
+        "request.credentials": "include",
+      },
+    },
   });
   server.applyMiddleware({ app });
 }
