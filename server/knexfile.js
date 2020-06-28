@@ -35,12 +35,31 @@ const test = {
 };
 
 const development = {
-  ...test,
+  client: "sqlite3",
   connection: {
     filename: path.join(__dirname, "development.db"),
   },
-  seeds: {
-    directory: path.resolve(__dirname, "seeds", "development"),
+  migrations: {
+    directory: path.resolve(__dirname, "migrations"),
+  },
+  getConnection: async () => {
+    return knex({
+      client: development.client,
+      connection: development.connection,
+      useNullAsDefault: true,
+      migrations: development.migrations,
+    });
+  },
+  create: async () => {
+    return await development.getConnection();
+  },
+  drop: async () => {
+    return new Promise((resolve) => {
+      const file = development.connection.filename;
+      fs.unlink(file, () => {
+        resolve();
+      });
+    });
   },
 };
 

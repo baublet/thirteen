@@ -8,7 +8,7 @@ it("creates and returns a user", async () => {
     db: connection,
     provider: UserProvider.OKTA,
     providerId: "providerId",
-    providerData: "{\"test\":123}",
+    providerData: '{"test":123}',
   });
-  expect(result.providerData).toEqual("{\"test\":123}");
+  expect(result.providerData).toEqual('{"test":123}');
 });

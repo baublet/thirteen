@@ -41,7 +41,7 @@
     "start": "ts-node --transpile-only serve.ts",
     "develop": "PORT=8888 yarn start",
     "knex": "ts-node --transpile-only ./node_modules/.bin/knex",
-    "db:reset": "rm -rf ./develop.db ./test.db && yarn knex migrate:latest",
+    "db:reset": "rm -rf ./development.db && rm -rf ./test.db ./test.db && NODE_ENV=development yarn knex migrate:latest",
     "test": "rm -rf ./test.db && NODE_ENV=test yarn knex migrate:latest && jest"
   }
 }
