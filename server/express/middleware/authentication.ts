@@ -1,6 +1,8 @@
 import { Express } from "express";
 import session from "express-session";
 import { ExpressOIDC } from "@okta/oidc-middleware";
+import sessionStore from "connect-session-knex";
+import { getConnection } from "../../config";
 
 import { log } from "../../utilities";
 
@@ -15,11 +17,16 @@ const authConfig = {
 
 export async function authentication(app: Express) {
   // session support is required to use ExpressOIDC
+  const KnexSessionStore = sessionStore(session);
+  const store = new KnexSessionStore({
+    knex: await getConnection("session-store"),
+  });
   app.use(
     session({
       secret: authConfig.sessionSecret || "Don'tUseTheDefaultValue",
       resave: true,
       saveUninitialized: false,
+      store,
     })
   );
 
@@ -29,7 +36,7 @@ export async function authentication(app: Express) {
     client_id: authConfig.clientId,
     client_secret: authConfig.clientSecret,
     redirect_uri: authConfig.redirectUri,
-    scope: "openid profile",
+    scope: "openid profile email",
   });
 
   oidc.on("error", (error: string) => {

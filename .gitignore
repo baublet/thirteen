@@ -1,8 +1,8 @@
 # sqlite databases
-test.db
-test.db-journal
-development.db
-development.db-journal
+*test.db
+*test.db-journal
+*development.db
+*development.db-journal
 
 # Logs
 logs
