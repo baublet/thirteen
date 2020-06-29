@@ -3,5 +3,6 @@ module.exports = {
     "^.+\\.tsx?$": "ts-jest",
   },
   testRegex: "((\\.|/)(test|spec))\\.tsx?$",
-  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"]
+  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
+  globalSetup: "./jest.setup.js",
 };

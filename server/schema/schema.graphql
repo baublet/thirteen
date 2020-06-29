@@ -1,6 +1,8 @@
+scalar Date
+
 type User {
-  id: String!
-  username: String!
+  id: ID!
+  name: String!
 }
 
 type PingResponse {
@@ -10,6 +12,197 @@ type PingResponse {
   databaseVersion: String!
 }
 
+input ConnectionInput {
+  offset: Int
+  limit: Int
+}
+
+type PageInfo {
+  totalCount: Int!
+  hasMore: Boolean!
+}
+
+type UserConnection {
+  pageInfo: PageInfo!
+  nodes: [User!]!
+}
+
+type GameEventConnection {
+  pageInfo: PageInfo!
+  nodes: [GameEvent!]!
+}
+
+enum GameEventType {
+  concede
+  game_over
+  new_game
+  new_set
+  pass
+  play
+}
+
+type GamePlayer {
+  playerId: Int!
+  hand: [Card!]!
+}
+
+type ConcedePayload {
+  playerId: Int!
+}
+
+type ConcedeEvent {
+  id: ID!
+  createdAt: Date!
+  type: GameEventType!
+  payload: ConcedePayload!
+}
+
+type NewGamePayload {
+  gameId: Int!
+  players: [GamePlayer!]
+}
+
+type NewGameEvent {
+  id: ID!
+  createdAt: Date!
+  type: GameEventType!
+  payload: NewGamePayload!
+}
+
+type GameOverPayload {
+  losers: [GamePlayer!]!
+  winners: [GamePlayer!]!
+}
+
+type GameOverEvent {
+  id: ID!
+  createdAt: Date!
+  type: GameEventType!
+  payload: GameOverPayload!
+}
+
+enum Set {
+  ONE
+  TWO
+  THREE
+  FOUR
+  RUN
+  MULTI_RUN
+}
+
+type NewSetPayload {
+  set: Set!
+}
+
+type NewSetEvent {
+  id: ID!
+  createdAt: Date!
+  type: GameEventType!
+  payload: NewSetPayload!
+}
+
+type PassPayload {
+  playerId: Int!
+}
+
+type PassEvent {
+  id: ID!
+  createdAt: Date!
+  type: GameEventType!
+  payload: PassPayload!
+}
+
+type PlayPayload {
+  playerId: Int!
+  cards: [Card!]!
+}
+
+type PlayEvent {
+  id: ID!
+  createdAt: Date!
+  type: GameEventType!
+  payload: PlayPayload!
+}
+
+union GameEvent =
+    PlayEvent
+  | PassEvent
+  | NewSetEvent
+  | NewGameEvent
+  | GameOverEvent
+  | ConcedeEvent
+
+enum Card {
+  CLUBS_3
+  CLUBS_4
+  CLUBS_5
+  CLUBS_6
+  CLUBS_7
+  CLUBS_8
+  CLUBS_9
+  CLUBS_10
+  CLUBS_JACK
+  CLUBS_QUEEN
+  CLUBS_KING
+  CLUBS_ACE
+  CLUBS_2
+
+  SPADES_3
+  SPADES_4
+  SPADES_5
+  SPADES_6
+  SPADES_7
+  SPADES_8
+  SPADES_9
+  SPADES_10
+  SPADES_JACK
+  SPADES_QUEEN
+  SPADES_KING
+  SPADES_ACE
+  SPADES_2
+
+  DIAMONDS_3
+  DIAMONDS_4
+  DIAMONDS_5
+  DIAMONDS_6
+  DIAMONDS_7
+  DIAMONDS_8
+  DIAMONDS_9
+  DIAMONDS_10
+  DIAMONDS_JACK
+  DIAMONDS_QUEEN
+  DIAMONDS_KING
+  DIAMONDS_ACE
+  DIAMONDS_2
+
+  HEARTS_3
+  HEARTS_4
+  HEARTS_5
+  HEARTS_6
+  HEARTS_7
+  HEARTS_8
+  HEARTS_9
+  HEARTS_10
+  HEARTS_JACK
+  HEARTS_QUEEN
+  HEARTS_KING
+  HEARTS_ACE
+  HEARTS_2
+}
+
+type Game {
+  players(input: ConnectionInput): UserConnection!
+  events(input: ConnectionInput): GameEventConnection!
+}
+
+type GameConnection {
+  pageInfo: PageInfo!
+  nodes: [Game!]!
+}
+
 type Query {
+  currentUser: User
+
   ping: PingResponse!
+  games: GameConnection!
 }

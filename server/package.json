@@ -18,12 +18,15 @@
     "jest": "^26.1.0",
     "knex": "^0.21.1",
     "pg": "^7.18.2",
+    "pm2": "^4.4.0",
     "safe-json-stringify": "^1.2.0",
     "sqlite3": "^4.2.0",
     "ts-node": "^8.10.2",
     "ulid": "^2.3.0"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "1.15.4",
+    "@graphql-codegen/typescript": "^1.15.4",
     "@types/express-session": "^1.17.0",
     "@types/jest": "^26.0.3",
     "@types/jsonwebtoken": "^8.5.0",
@@ -33,15 +36,18 @@
     "typescript": "^3.9.5"
   },
   "scripts": {
+    "postinstall": "yarn generate:gql",
     "migration:create": "knex migrate:make -x ts",
     "seed:test:create": "NODE_ENV=test knex seed:make",
     "seed:test": "NODE_ENV=test knex seed:run",
     "seed:dev:create": "NODE_ENV=development knex seed:make",
     "seed:dev": "NODE_ENV=development knex seed:run",
     "start": "ts-node --transpile-only serve.ts",
-    "develop": "PORT=8888 yarn start",
+    "develop": "pm2 start --watch ecosystem.config.js && yarn pm2 logs",
+    "develop:stop": "pm2 stop thirteen-server",
     "knex": "ts-node --transpile-only ./node_modules/.bin/knex",
     "db:reset": "rm -rf ./development.db && rm -rf ./test.db ./test.db && NODE_ENV=development yarn knex migrate:latest",
-    "test": "rm -rf ./test.db && NODE_ENV=test yarn knex migrate:latest && jest"
+    "test": "jest",
+    "generate:gql": "graphql-codegen --config codegen.yml"
   }
 }

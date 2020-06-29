@@ -1,3 +1,6 @@
+# Generated GQL -> TS types
+generated.ts
+
 # sqlite databases
 *test.db
 *test.db-journal

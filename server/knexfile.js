@@ -21,6 +21,10 @@ const test = {
       migrations: test.migrations,
     });
   },
+  migrate: async () => {
+    const connection = await test.getConnection();
+    return connection.migrate.latest();
+  },
   create: async () => {
     return await test.getConnection();
   },

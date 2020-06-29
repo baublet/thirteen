@@ -1,0 +1,11 @@
+overwrite: true
+schema: ./schema/schema.graphql
+documents: null
+generates:
+  schema/generated.ts:
+    plugins:
+      - "typescript"
+    config:
+      scalars:
+        Date: number
+        ID: number

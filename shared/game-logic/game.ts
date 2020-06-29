@@ -53,7 +53,7 @@ export enum Card {
   HEARTS_QUEEN = 490,
   HEARTS_KING = 492,
   HEARTS_ACE = 494,
-  HEARTS_2 = 496
+  HEARTS_2 = 496,
 }
 
 export enum Set {
@@ -62,12 +62,12 @@ export enum Set {
   THREE = "three",
   FOUR = "four",
   RUN = "run",
-  MULTI_RUN = "multi-run"
+  MULTI_RUN = "multi-run",
 }
 
 export enum Bomb {
   FOUR = Set.FOUR,
-  MULTI_RUN = Set.MULTI_RUN
+  MULTI_RUN = Set.MULTI_RUN,
 }
 
 export interface Play {
@@ -90,7 +90,7 @@ export enum GameEventType {
   NEW_GAME = "new_game",
   NEW_SET = "new_set",
   PASS = "pass",
-  PLAY = "play"
+  PLAY = "play",
 }
 
 export interface ConcedePayload {
@@ -99,12 +99,12 @@ export interface ConcedePayload {
 
 export interface NewGamePayload {
   players: Player[];
-  id: number,
+  gameId: number;
 }
 
 export interface GameOverPayload {
-  losers: [number, number, number];
-  winner: number;
+  losers: number[];
+  winners: number[];
 }
 
 export interface NewSetPayload {
@@ -137,7 +137,7 @@ export interface Player {
   hand: Hand;
 }
 
-export interface GameBoard {
+export interface Game {
   id: undefined | number;
   playedSets: PlayedSet[];
   players: Player[];
