@@ -1,0 +1,24 @@
+import { RenderingSystem } from "..";
+import { RenderableComponent } from "../../../components/renderable";
+
+export class Graphic {
+  protected component: RenderableComponent;
+  protected system: RenderingSystem;
+
+  constructor(component: RenderableComponent, system: RenderingSystem) {
+    this.component = component;
+    this.system = system;
+  }
+
+  public initialize(): void {
+    throw new Error(`You didn't define an initialize function for ${this}`);
+  }
+
+  public destroy(): void {
+    throw new Error(`You didn't define a destroy function for ${this}`);
+  }
+
+  public render(): void {
+    throw new Error(`You didn't define a render function for ${this}`);
+  }
+}
