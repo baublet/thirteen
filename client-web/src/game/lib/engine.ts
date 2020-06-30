@@ -39,16 +39,29 @@ export class Engine {
   }
 
   public createComponent<T extends Component>(entity: Entity, component: T) {
+    const concernedSystems = this.getConcernedSystems(component);
+
+    for (const system of concernedSystems) {
+      if (system.beforeComponentCreated)
+        system.beforeComponentCreated(entity, component, this);
+    }
+
     if (!this.entityComponents.has(entity)) {
       this.entityComponents.set(entity, [component]);
     } else {
       this.entityComponents.get(entity)?.push(component);
     }
+
+    for (const system of concernedSystems) {
+      if (system.afterComponentCreated)
+        system.afterComponentCreated(entity, component, this);
+    }
+
     return component;
   }
 
   public attachSystem(system: System, systemName: string) {
-    console.log(`Attaching system ${systemName}`);
+    console.log(`Attaching ${systemName}`);
     const concerns = system.componentConcerns;
     for (const type of concerns) {
       if (!this.systems.get(type)) {
@@ -106,14 +119,16 @@ export class Engine {
     return;
   }
 
-  protected getEntityComponents(entity: Entity): Component[] {
+  public getEntityComponents(entity: Entity): Component[] {
     return this.entityComponents.get(entity) || [];
   }
 
-  protected getEntityComponentsByType(
+  public getEntityComponentsByType<T extends Component = Component>(
     entity: Entity,
     type: ComponentType
-  ): Component[] {
-    return this.getEntityComponents(entity).filter((c) => c.type === type);
+  ): T[] {
+    return this.getEntityComponents(entity).filter(
+      (c) => c.type === type
+    ) as T[];
   }
 }

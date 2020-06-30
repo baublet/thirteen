@@ -1,5 +1,6 @@
 export enum ComponentTypes {
   ALL,
+  CARD,
   RENDERABLE,
 }
 

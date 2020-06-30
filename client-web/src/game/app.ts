@@ -1,6 +1,11 @@
 import { Engine } from "./lib/engine";
 import { systems } from "./systems";
 import { createRenderableComponent } from "./components/renderable";
+import {
+  createCardComponent,
+  CardTypeEnum,
+  CardSuitEnum,
+} from "./components/card";
 
 class ThirteenEngine extends Engine {
   constructor() {
@@ -17,5 +22,6 @@ for (const system of systems) {
 const helloWorld = engine.createEntity();
 engine.createComponent(
   helloWorld,
-  createRenderableComponent()
+  createCardComponent(CardTypeEnum.EIGHT, CardSuitEnum.DIAMONDS)
 );
+engine.createComponent(helloWorld, createRenderableComponent());

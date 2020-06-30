@@ -1,17 +1,27 @@
-import * as Pixi from "pixi.js"
+import * as Pixi from "pixi.js";
 
 import { RenderingSystem } from "..";
 import { RenderableComponent } from "../../../components/renderable";
+import { Entity, Engine } from "../../../lib/engine";
 
 export class Graphic {
   protected component: RenderableComponent;
   protected system: RenderingSystem;
+  protected entity: Entity;
+  protected engine: Engine;
 
   public displayObject: Pixi.DisplayObject;
 
-  constructor(component: RenderableComponent, system: RenderingSystem) {
+  constructor(
+    entity: Entity,
+    component: RenderableComponent,
+    system: RenderingSystem,
+    engine: Engine
+  ) {
     this.component = component;
     this.system = system;
+    this.entity = entity;
+    this.engine = engine;
   }
 
   public initialize(): void {
