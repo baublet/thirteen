@@ -1,14 +1,19 @@
-import { Component, ComponentType, Entity, Engine } from "../lib/engine";
+import { Component } from "../lib/engine";
+import { ComponentTypes } from "./";
 
 export enum GraphicType {
   CARD,
 }
 
-export class RenderableComponent implements Component {
-  public type: ComponentType;
-  public graphicType: GraphicType = GraphicType.CARD;
-  public onCreate(entity: Entity, engine: Engine) {
-    console.log(engine);
-    console.log(entity);
-  }
+export interface RenderableComponent extends Component {
+  graphicType: GraphicType;
+}
+
+export function createRenderableComponent(
+  graphicType: GraphicType = GraphicType.CARD
+): RenderableComponent {
+  return {
+    type: ComponentTypes.RENDERABLE,
+    graphicType,
+  };
 }

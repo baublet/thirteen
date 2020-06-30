@@ -1,9 +1,13 @@
+import * as Pixi from "pixi.js"
+
 import { RenderingSystem } from "..";
 import { RenderableComponent } from "../../../components/renderable";
 
 export class Graphic {
   protected component: RenderableComponent;
   protected system: RenderingSystem;
+
+  public displayObject: Pixi.DisplayObject;
 
   constructor(component: RenderableComponent, system: RenderingSystem) {
     this.component = component;
@@ -16,9 +20,5 @@ export class Graphic {
 
   public destroy(): void {
     throw new Error(`You didn't define a destroy function for ${this}`);
-  }
-
-  public render(): void {
-    throw new Error(`You didn't define a render function for ${this}`);
   }
 }

@@ -1,62 +1,67 @@
-import { systems } from "pixi.js";
-
 export type Entity = number;
 
 export type ComponentShape = Record<string, string | number>;
-export type ComponentType = symbol;
+export type ComponentType = number;
 
-export abstract class Component {
-  public type: ComponentType;
-  public onCreate?: (entity: Entity, engine: Engine) => void;
-  public onDestroy?: (entity: Entity, engine: Engine) => void;
+export interface Component {
+  type: ComponentType;
+}
+
+export interface System<C extends Component = Component> {
+  componentConcerns: ComponentType[];
+  update(engine: Engine): void;
+
+  initialize?(engine: Engine): void;
+  beforeComponentCreated?(entity: Entity, component: C, engine: Engine): void;
+  afterComponentCreated?(entity: Entity, component: C, engine: Engine): void;
+  beforeComponentDestroyed?(entity: Entity, component: C, engine: Engine): void;
+  afterComponentDestroyed?(entity: Entity, component: C, engine: Engine): void;
+  beforeComponentUpdates?(entity: Entity, component: C, engine: Engine): void;
+  afterComponentUpdates?(entity: Entity, component: C, engine: Engine): void;
 }
 
 export class Engine {
-  protected _entitySeed: number = 0;
-  protected _componentSeed: number = 0;
+  protected entitySeed: number = 0;
+  protected componentSeed: number = 0;
 
-  protected _entityComponents: Map<Entity, Component[] | undefined> = new Map();
-  protected _systems: System<Component>[];
+  protected entityComponents: Map<Entity, Component[] | undefined> = new Map();
+  protected systems: Map<ComponentType, System[]> = new Map();
 
   public createEntity(): number {
-    return this._entitySeed++;
+    return this.entitySeed++;
   }
 
   public destroyEntity(entity: Entity): void {
-    const components = this._entityComponents.get(entity);
+    const components = this.entityComponents.get(entity);
     if (!components) return;
 
-    this._entityComponents.set(entity, undefined);
+    this.entityComponents.set(entity, undefined);
   }
 
   public createComponent<T extends Component>(entity: Entity, component: T) {
-    if (!this._entityComponents.has(entity)) {
-      this._entityComponents.set(entity, [component]);
+    if (!this.entityComponents.has(entity)) {
+      this.entityComponents.set(entity, [component]);
     } else {
-      this._entityComponents.get(entity)?.push(component);
-    }
-    if (component.onCreate) {
-      component.onCreate(entity, this);
+      this.entityComponents.get(entity)?.push(component);
     }
     return component;
   }
 
-  public attachSystem(system: System<Component>) {
-    this._systems.push(system);
-    if (system.initialize) {
-      system.initialize(this);
+  public attachSystem(system: System, systemName: string) {
+    console.log(`Attaching system ${systemName}`);
+    const concerns = system.componentConcerns;
+    for (const type of concerns) {
+      if (!this.systems.get(type)) {
+        this.systems.set(type, []);
+      }
+      this.systems.get(type)?.push(system);
     }
+    if (system.initialize) system.initialize(this);
   }
 
-  protected getConcernedSystemsForComponent(
-    component: Component
-  ): System<Component>[] {
-    const concernedSystems: System<Component>[] = [];
-    for (const system of this._systems) {
-      if (system.componentType !== component.type) continue;
-      concernedSystems.push(system);
-    }
-    return concernedSystems;
+  protected getConcernedSystems(component: Component): System[] {
+    const type = component.type;
+    return this.systems.get(type) || [];
   }
 
   public updateComponent<UC extends Component>(
@@ -64,8 +69,7 @@ export class Engine {
     component: UC,
     fn: (component: UC) => void
   ): void {
-    const concernedSystems = this.getConcernedSystemsForComponent(component);
-
+    const concernedSystems = this.getConcernedSystems(component);
     for (const system of concernedSystems) {
       if (system.beforeComponentUpdates)
         system.beforeComponentUpdates(entity, component, this);
@@ -80,21 +84,30 @@ export class Engine {
   }
 
   public destroyComponent<E extends Entity>(entity: E, component: Component) {
+    const concernedSystems = this.getConcernedSystems(component);
+
     const components = this.getEntityComponents(entity);
     const index = components.indexOf(component);
 
     if (index < 0) return entity;
 
-    if (component.onDestroy) {
-      component.onDestroy(entity, this);
+    for (const system of concernedSystems) {
+      if (system.beforeComponentDestroyed)
+        system.beforeComponentDestroyed(entity, component, this);
     }
+
     components.splice(index, 1);
+
+    for (const system of concernedSystems) {
+      if (system.afterComponentDestroyed)
+        system.afterComponentDestroyed(entity, component, this);
+    }
 
     return;
   }
 
   protected getEntityComponents(entity: Entity): Component[] {
-    return this._entityComponents.get(entity) || [];
+    return this.entityComponents.get(entity) || [];
   }
 
   protected getEntityComponentsByType(
@@ -103,43 +116,4 @@ export class Engine {
   ): Component[] {
     return this.getEntityComponents(entity).filter((c) => c.type === type);
   }
-}
-
-export abstract class System<T extends Component> {
-  public readonly componentType: ComponentType | undefined;
-  constructor(component?: ComponentType | Component) {
-    if (typeof component === "symbol") {
-      this.componentType = component;
-      return;
-    }
-    if (component) {
-      this.componentType = component.type;
-      return;
-    }
-  }
-
-  public abstract update(entities: Entity[], engine: Engine): void;
-
-  public abstract initialize?(engine: Engine): void;
-
-  public abstract beforeComponentCreated?(
-    entity: Entity,
-    component: T,
-    engine: Engine
-  ): void;
-  public abstract beforeComponentDestroyed?(
-    entity: Entity,
-    component: T,
-    engine: Engine
-  ): void;
-  public abstract beforeComponentUpdates?(
-    entity: Entity,
-    component: Component,
-    engine: Engine
-  ): void;
-  public abstract afterComponentUpdates?(
-    entity: Entity,
-    component: Component,
-    engine: Engine
-  ): void;
 }
