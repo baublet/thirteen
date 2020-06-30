@@ -5,10 +5,13 @@ const isDev = process.env.NODE_ENV !== "production";
 
 const config = {
   mode: isDev ? "development" : "production",
-  entry: "./src/game/app.ts",
+  entry: {
+    game: "./src/game/app.ts",
+    pages: "./src/pages/index.ts"
+  },
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: "bundle.js",
+    filename: "[name].js",
   },
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
@@ -25,7 +28,10 @@ const config = {
   plugins: [
     new CleanWebpackPlugin(),
     new CopyPlugin({
-      patterns: [{ from: "src/index.html", to: "index.html" }],
+      patterns: [
+        { from: "src/index.html", to: "index.html" },
+        { from: "src/game.html", to: "game.html" },
+      ],
     }),
   ],
   devServer: {

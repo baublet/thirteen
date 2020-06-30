@@ -7,10 +7,10 @@ import { graphicForComponent } from "./graphics/graphic-for-component";
 
 export class RenderingSystem implements System<RenderableComponent> {
   public componentConcerns: ComponentType[] = [ComponentTypes.RENDERABLE];
-  private stage: Pixi.Container;
-  private renderer: Pixi.Renderer;
-  private dirty: boolean = false;
-  private components: Map<RenderableComponent, Graphic> = new Map();
+  protected stage: Pixi.Container;
+  protected renderer: Pixi.Renderer;
+  protected dirty: boolean = false;
+  protected components: Map<RenderableComponent, Graphic> = new Map();
 
   public initialize() {
     const canvas = document.getElementById("game-canvas") as unknown;
@@ -27,7 +27,7 @@ export class RenderingSystem implements System<RenderableComponent> {
       antialias: true,
     });
 
-    requestAnimationFrame(this.update);
+    requestAnimationFrame(this.update.bind(this));
   }
 
   public update() {
