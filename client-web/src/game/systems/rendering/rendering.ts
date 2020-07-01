@@ -9,7 +9,6 @@ export class RenderingSystem implements System<RenderableComponent> {
   public componentConcerns: ComponentType[] = [ComponentTypes.RENDERABLE];
   protected stage: Pixi.Container;
   protected app: Pixi.Application;
-  protected dirty: boolean = false;
   protected components: Map<RenderableComponent, Graphic> = new Map();
 
   public initialize() {
@@ -27,24 +26,31 @@ export class RenderingSystem implements System<RenderableComponent> {
     document.body.appendChild(this.app.view);
     this.stage = this.app.stage;
 
-    requestAnimationFrame(this.update.bind(this));
+    // Initial render
+    this.app.renderer.render(this.stage);
+
+    this.app.ticker.add(() => {
+      this.update.bind(this);
+    });
   }
 
   public update() {
-    if (!this.dirty) {
-      this.dirty = false;
-      this.app.renderer.render(this.stage);
+    for (const [, graphic] of Object.values(this.components)) {
+      graphic.render();
     }
-    requestAnimationFrame(this.update.bind(this));
+    this.app.renderer.render(this.stage);
   }
 
-  public afterComponentCreated(entity: Entity, component: RenderableComponent, engine: Engine) {
+  public afterComponentCreated(
+    entity: Entity,
+    component: RenderableComponent,
+    engine: Engine
+  ) {
     const GraphicClass = graphicForComponent(component);
     const graphic = new GraphicClass(entity, component, this, engine);
     graphic.initialize();
     this.components.set(component, graphic);
     this.stage.addChild(graphic.displayObject);
-    this.dirty = true;
   }
 
   public beforeDestroy(_: unknown, component: RenderableComponent) {
@@ -52,12 +58,7 @@ export class RenderingSystem implements System<RenderableComponent> {
     if (graphic) {
       this.stage.removeChild(graphic.displayObject);
       graphic.destroy();
-      this.dirty = true;
     }
     this.components.delete(component);
-  }
-
-  public afterComponentUpdates() {
-    this.dirty = true;
   }
 }

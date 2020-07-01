@@ -6,6 +6,7 @@ import {
   CardTypeEnum,
   CardSuitEnum,
 } from "./components/card";
+import { loadAssets } from "./assets/loader";
 
 class ThirteenEngine extends Engine {
   constructor() {
@@ -13,15 +14,26 @@ class ThirteenEngine extends Engine {
   }
 }
 
-export const engine = new ThirteenEngine();
-for (const system of systems) {
-  const initializedSystem = new system();
-  engine.attachSystem(initializedSystem, system.name);
+function initialize() {
+  const engine = new ThirteenEngine();
+  for (const system of systems) {
+    const initializedSystem = new system();
+    engine.attachSystem(initializedSystem, system.name);
+  }
+
+  const helloWorld = engine.createEntity();
+  engine.createComponent(
+    helloWorld,
+    createCardComponent(CardTypeEnum.EIGHT, CardSuitEnum.DIAMONDS)
+  );
+  const card = createRenderableComponent();
+  engine.createComponent(helloWorld, card);
+  card.z = 150;
 }
 
-const helloWorld = engine.createEntity();
-engine.createComponent(
-  helloWorld,
-  createCardComponent(CardTypeEnum.EIGHT, CardSuitEnum.DIAMONDS)
-);
-engine.createComponent(helloWorld, createRenderableComponent());
+(async function () {
+  console.log("Loading assets...");
+  await loadAssets();
+  console.log("Initializing game...");
+  initialize();
+})();

@@ -24,6 +24,16 @@ export class Graphic {
     this.engine = engine;
   }
 
+  public scaleForZ(): void {
+    // const factor = this.component.z / 100;
+    // this.displayObject.scale.x = factor;
+    // this.displayObject.scale.y = factor;
+  }
+
+  public render(): void {
+    throw new Error(`You didn't define an update function for ${this}`);
+  }
+
   public initialize(): void {
     throw new Error(`You didn't define an initialize function for ${this}`);
   }

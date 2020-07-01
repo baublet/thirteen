@@ -7,7 +7,7 @@ const config = {
   mode: isDev ? "development" : "production",
   entry: {
     game: "./src/game/app.ts",
-    pages: "./src/pages/index.ts"
+    pages: "./src/pages/index.ts",
   },
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -31,6 +31,7 @@ const config = {
       patterns: [
         { from: "src/index.html", to: "index.html" },
         { from: "src/game.html", to: "game.html" },
+        { from: "src/game/assets/images/classic/*", to: "assets/images/classic/[name].[ext]"}
       ],
     }),
   ],

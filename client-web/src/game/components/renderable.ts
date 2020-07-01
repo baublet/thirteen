@@ -7,6 +7,9 @@ export enum GraphicType {
 
 export interface RenderableComponent extends Component {
   graphicType: GraphicType;
+  x: number;
+  y: number;
+  z: number;
 }
 
 export function createRenderableComponent(
@@ -15,5 +18,8 @@ export function createRenderableComponent(
   return {
     type: ComponentTypes.RENDERABLE,
     graphicType,
+    x: 0,
+    y: 0,
+    z: 100
   };
 }
