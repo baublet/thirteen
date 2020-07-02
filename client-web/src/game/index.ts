@@ -6,7 +6,6 @@ import {
   CardTypeEnum,
   CardSuitEnum,
 } from "./components/card";
-import { loadAssets } from "./assets/loader";
 
 class ThirteenEngine extends Engine {
   constructor() {
@@ -32,8 +31,6 @@ function initialize() {
 }
 
 (async function () {
-  console.log("Loading assets...");
-  await loadAssets();
   console.log("Initializing game...");
   initialize();
 })();

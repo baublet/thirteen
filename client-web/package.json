@@ -3,14 +3,12 @@
   "version": "0.2.0",
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack",
-    "serve": "webpack-dev-server --hot"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/yahiko00/PixiProject.git"
+    "develop": "webpack-dev-server --hot"
   },
   "license": "MIT",
   "devDependencies": {
+    "@types/react": "^16.9.41",
+    "@types/react-dom": "^16.9.8",
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^6.0.2",
     "cross-env": "^7.0.2",
@@ -21,6 +19,7 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
-    "pixi.js": "^5.3.0"
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
   }
 }

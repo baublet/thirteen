@@ -1,1 +1,0 @@
-export { CardGraphic } from "./classic"
