@@ -6,6 +6,7 @@ type User {
 }
 
 type PingResponse {
+  authenticated: Boolean!
   response: String!
   requestId: String!
   databaseHealth: String!
@@ -42,12 +43,12 @@ enum GameEventType {
 }
 
 type GamePlayer {
-  playerId: Int!
+  userId: ID!
   hand: [Card!]!
 }
 
 type ConcedePayload {
-  playerId: Int!
+  userId: ID!
 }
 
 type ConcedeEvent {
@@ -132,6 +133,18 @@ union GameEvent =
   | GameOverEvent
   | ConcedeEvent
 
+type Play {
+  cards: [Card!]!
+  player: GamePlayer!
+}
+
+type PlayedSet {
+  open: Boolean!
+  passedPlayers: [GamePlayer!]!
+  plays: [Play]!
+  set: Set!
+}
+
 enum Card {
   CLUBS_3
   CLUBS_4
@@ -191,8 +204,13 @@ enum Card {
 }
 
 type Game {
-  players(input: ConnectionInput): UserConnection!
-  events(input: ConnectionInput): GameEventConnection!
+  id: ID!
+  playedSets: [PlayedSet!]!
+  players: [GamePlayer!]!
+  events: [GameEvent!]!
+  playerTurn: GamePlayer!
+  winner: GamePlayer
+  losers: [GamePlayer!]!
 }
 
 type GameConnection {

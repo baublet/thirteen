@@ -14,3 +14,5 @@ export type CardNumber =
   | "king";
 
 export type CardSuit = "spades" | "clubs" | "diamonds" | "hearts";
+
+export { Card as Classic } from "./Classic";

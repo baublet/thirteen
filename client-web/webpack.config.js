@@ -6,8 +6,7 @@ const isDev = process.env.NODE_ENV !== "production";
 const config = {
   mode: isDev ? "development" : "production",
   entry: {
-    game: "./src/game/index.ts",
-    pages: "./src/index.ts",
+    game: "./src/game/index.tsx"
   },
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -30,7 +29,7 @@ const config = {
     new CopyPlugin({
       patterns: [
         { from: "src/index.html", to: "index.html" },
-        { from: "assets/*", to: "[path][name].[ext]"}
+        // { from: "assets/*", to: "[path][name].[ext]"}
       ],
     }),
   ],

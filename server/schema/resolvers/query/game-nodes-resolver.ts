@@ -7,8 +7,8 @@ export function gameNodesResolverFactory(
   return async () => {
     return [
       {
-        players: { nodes: [] },
-        events: { nodes: [] },
+        players: [],
+        events: [],
       },
     ] as any;
   };

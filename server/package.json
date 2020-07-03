@@ -1,6 +1,7 @@
 {
   "name": "@thirteen/server",
   "main": "index.ts",
+  "browser": "browser.ts",
   "license": "ISC",
   "dependencies": {
     "@okta/oidc-middleware": "^4.0.1",
@@ -43,7 +44,7 @@
     "seed:dev:create": "NODE_ENV=development knex seed:make",
     "seed:dev": "NODE_ENV=development knex seed:run",
     "start": "ts-node --transpile-only serve.ts",
-    "develop": "pm2 start --watch ecosystem.config.js && yarn pm2 logs",
+    "develop": "yarn develop:stop && pm2 start --watch ecosystem.config.js && yarn pm2 logs",
     "develop:stop": "pm2 stop thirteen-server",
     "knex": "ts-node --transpile-only ./node_modules/.bin/knex",
     "db:reset": "rm -rf ./development.db && rm -rf ./test.db ./test.db && NODE_ENV=development yarn knex migrate:latest",
