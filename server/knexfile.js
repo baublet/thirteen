@@ -8,6 +8,7 @@ const test = {
   connection: {
     filename: path.join(__dirname, "test.db"),
   },
+  useNullAsDefault: true,
   migrations: {
     directory: path.resolve(__dirname, "migrations"),
   },
@@ -56,6 +57,7 @@ const development = {
   connection: {
     filename: path.join(__dirname, "development.db"),
   },
+  useNullAsDefault: true,
   migrations: {
     directory: path.resolve(__dirname, "migrations"),
   },
@@ -98,6 +100,7 @@ const production = {
   migrations: {
     directory: path.resolve(__dirname, "migrations"),
   },
+  useNullAsDefault: true,
   /**
    * @returns Promise<DatabaseInterface>
    */

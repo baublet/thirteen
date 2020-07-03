@@ -43,7 +43,7 @@ enum GameEventType {
 }
 
 type GamePlayer {
-  userId: ID!
+  user: User!
   hand: [Card!]!
 }
 
@@ -203,8 +203,17 @@ enum Card {
   HEARTS_2
 }
 
+enum GameStatus {
+  WAITING_FOR_PLAYERS
+  ONGOING
+  FINISHED
+}
+
 type Game {
   id: ID!
+  owner: GamePlayer!
+  type: GameType!
+  invitations: [GameInvitation!]!
   playedSets: [PlayedSet!]!
   players: [GamePlayer!]!
   events: [GameEvent!]!
@@ -213,9 +222,37 @@ type Game {
   losers: [GamePlayer!]!
 }
 
+enum GameInvitationStatus {
+  ACCEPTED
+  DECLINED
+  SEEN
+  UNSEEN
+  REVOKED
+}
+
+type GameInvitation {
+  game: Game!
+  from: User!
+  to: User!
+  status: GameInvitationStatus!
+}
+
 type GameConnection {
   pageInfo: PageInfo!
   nodes: [Game!]!
+}
+
+type GameMutationReturnPayload {
+  errors: [String!]!
+  game: Game!
+}
+
+enum GameType {
+  CLASSIC
+}
+
+input CreateGameInput {
+  type: GameType
 }
 
 type Query {
@@ -223,4 +260,8 @@ type Query {
 
   ping: PingResponse!
   games: GameConnection!
+}
+
+type Mutation {
+  createGame(input: CreateGameInput): GameMutationReturnPayload!
 }

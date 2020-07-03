@@ -10,7 +10,7 @@ export interface GamePlayerEntity {
   userId: number;
 }
 
-export const User = {
+export const GamePlayer = {
   tableName,
   create,
   findByGameId,

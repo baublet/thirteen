@@ -1,5 +1,14 @@
 import React from "react";
 
-export function Game() {
-  return <b>Hello World</b>
+import { Game as GameState } from "../../../../shared/game-logic/game";
+
+export function Game({
+  id,
+  losingPlayerIds,
+  playedSets,
+  playerTurn,
+  players,
+  winnerPlayerId,
+}: GameState) {
+  return <b>Hello World</b>;
 }

@@ -3,14 +3,16 @@ import { GameEntity, tableName } from ".";
 
 interface CreateGamePlayerProps {
   db: Transaction | Connection;
+  ownerUserId: number;
 }
 
 export async function create({
   db,
+  ownerUserId,
 }: CreateGamePlayerProps): Promise<GameEntity> {
   const insertion = await db
     .insert({
-      createdAt: Date.now(),
+      ownerUserId,
     })
     .into(tableName);
   // SQLite doesn't support RETURNING. So we have to use this syntax that's

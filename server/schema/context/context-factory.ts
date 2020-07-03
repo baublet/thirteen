@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { ulid } from "ulid";
 
 import { getConnection, Connection } from "../../config";
-import { UserEntity } from "../../data-services";
+import { dataServices, UserEntity } from "../../data-services";
 
 import { loadersFactory } from "./loaders-factory";
 import { currentUser } from "./current-user";
@@ -16,8 +16,9 @@ export interface Context {
   };
   response: Response;
   connection: Promise<Connection>;
-  loaders: any;
+  getLoader: ReturnType<typeof loadersFactory>;
   currentUser: Promise<UserEntity | undefined>;
+  dataServices: typeof dataServices;
 }
 
 export function contextFactory({
@@ -39,7 +40,8 @@ export function contextFactory({
     },
     response: res,
     connection,
-    loaders: loadersFactory(connection),
-    currentUser: currentUser(req, connection)
+    getLoader: loadersFactory(connection),
+    currentUser: currentUser(req, connection),
+    dataServices,
   };
 }

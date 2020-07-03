@@ -1,29 +1,42 @@
 import DataLoader from "dataloader";
 
 import { Connection } from "../../config";
-import { User } from "../../data-services";
+import { User, Game } from "../../data-services";
 
-export interface Loaders {
-  user: () => DataLoader<number, typeof User>;
-}
+const dataLoaders = {
+  user: User.dataLoaderFactory,
+  game: Game.dataLoaderFactory,
+};
 
-type DataService = typeof User;
+type DataLoaderFactory = (
+  connection: Promise<Connection>
+) => DataLoader<any, any>;
+type Loaders = typeof dataLoaders;
+type GetLoadersFunction = <K extends keyof Loaders>(
+  k: K
+) => ReturnType<Loaders[K]>;
 
 export function loadersFactory(
   connection: Promise<Connection>
-): Loaders {
-  const loaders: Record<string, any> = {};
+): GetLoadersFunction {
+  const loaders: Record<string, DataLoader<any, any>> = {};
 
-  function getLoader<T extends DataService>(
-    loader: string,
-    service: T
-  ): DataLoader<number, T> {
-    if (!loaders[loader])
-      loaders[loader] = service.dataLoaderFactory(connection);
+  function getLoader(
+    loader: keyof Loaders,
+    dataLoaderFactory: DataLoaderFactory
+  ): DataLoader<any, any> {
+    if (!loaders[loader]) loaders[loader] = dataLoaderFactory(connection);
     return loaders[loader];
   }
 
-  return {
-    user: () => getLoader<typeof User>("user", User),
+  return function <K extends keyof Loaders>(key: K): ReturnType<Loaders[K]> {
+    if (!loaders[key]) {
+      if (!dataLoaders[key]) {
+        throw new Error(`Unknown data loader requested: ${key}`);
+      }
+      const dataLoaderFactory = dataLoaders[key];
+      loaders[key] = getLoader(key, dataLoaderFactory);
+    }
+    return loaders[key] as ReturnType<Loaders[K]>;
   };
 }

@@ -20,7 +20,7 @@ export async function databaseHealth(
       );
       return "red";
     }
-    const userLoader = context.loaders.user();
+    const userLoader = context.getLoader("user");
     if (!userLoader) {
       log.error(
         "Unknown error: falsy user loader returned from context.loaders.user()"

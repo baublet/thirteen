@@ -1,13 +1,11 @@
-import { GameConnectionPartial } from "../";
-import { gameNodesResolverFactory } from "./game-nodes-resolver"
+import { Context } from "../../context";
+import { gameConnectionFactory } from "../game-connection";
 
-export async function games(): Promise<GameConnectionPartial> {
-  console.log("Games called");
-  return {
-    pageInfo: {
-      totalCount: 10,
-      hasMore: true,
-    },
-    nodes: gameNodesResolverFactory([1, 2, 3]),
-  };
+export async function games(
+  _: unknown,
+  __: unknown,
+  context: Context
+): Promise<{}> {
+  const currentUser = await context.currentUser;
+  return gameConnectionFactory({ context, ownerUserId: currentUser.id });
 }

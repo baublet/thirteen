@@ -19,7 +19,7 @@ export async function create({
     toUserId,
     fromUserId,
     gameId,
-    status: "unseen",
+    status: "UNSEEN",
   });
   // SQLite doesn't support RETURNING. So we have to use this syntax that's
   // provided by knex where it returns an array with one element: the inserted

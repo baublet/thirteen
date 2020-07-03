@@ -1,18 +1,18 @@
 import { Connection, Transaction } from "../../config";
 import { GameInvitationEntity, tableName } from ".";
 
-interface AcceptInvitationProps {
+interface RevokeInvitationProps {
   db: Transaction | Connection;
   invitationId: number;
 }
 
-export async function accept({
+export async function revoke({
   db,
   invitationId,
-}: AcceptInvitationProps): Promise<GameInvitationEntity> {
+}: RevokeInvitationProps): Promise<GameInvitationEntity> {
   const insertion = await db<GameInvitationEntity>(tableName)
     .update({
-      status: "accepted",
+      status: "REVOKED",
     })
     .where("id", invitationId)
     .limit(1);

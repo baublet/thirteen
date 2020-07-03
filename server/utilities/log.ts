@@ -1,5 +1,18 @@
 import stringify from "safe-json-stringify";
 
+function isError(obj: any): obj is Error {
+  if (typeof obj !== "object") return false;
+  if (Object.getOwnPropertyNames(obj).includes("stack")) return true;
+  return false;
+}
+
+function logError(error: Error): string {
+  return stringify({
+    message: error.message,
+    stackTrace: error.stack,
+  });
+}
+
 function serializeArguments(data: any[]): string {
   const timestamp = Date.now();
   return (
@@ -13,6 +26,7 @@ function serializeArguments(data: any[]): string {
         if (type === "bigint") return data;
         if (type === "undefined") return "undefined";
         if (type === "symbol") return "(Symbol)";
+        if (isError(data)) return logError(data);
         return stringify(data);
       })
       .join(" ")
