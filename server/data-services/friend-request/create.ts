@@ -1,10 +1,21 @@
 import { Connection, Transaction } from "../../config";
 import { FriendRequestEntity, tableName } from ".";
+import { findByFromIdAndToId } from "./find-by-from-id-and-to-id";
 
 interface CreateFriendRequestProps {
   db: Transaction | Connection;
   fromUserId: number;
   toUserId: number;
+}
+
+export async function canCreate(
+  props: CreateFriendRequestProps
+): Promise<boolean> {
+  const extantRequest = await findByFromIdAndToId(props);
+  if(Boolean(extantRequest)) {
+    return false;
+  }
+  return true;
 }
 
 export async function create({

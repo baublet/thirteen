@@ -2,6 +2,7 @@ import { User, UserEntity, UserProvider } from "./user";
 import { Game, GameEntity } from "./game";
 import { GameInvitation, GameInvitationEntity } from "./game-invitation";
 import { GamePlayer, GamePlayerEntity } from "./game-player";
+import { FriendRequestEntity, FriendRequest } from "./friend-request";
 
 export interface PageInfoArguments {
   limit?: number;
@@ -9,22 +10,25 @@ export interface PageInfoArguments {
 }
 
 export const dataServices = {
-  User,
+  FriendRequest,
   Game,
   GameInvitation,
   GamePlayer,
+  User,
 };
 
 export {
   // Services
-  User,
+  FriendRequest,
   Game,
   GameInvitation,
   GamePlayer,
+  User,
   // Types
   UserEntity,
   UserProvider,
   GameEntity,
   GameInvitationEntity,
   GamePlayerEntity,
+  FriendRequestEntity,
 };

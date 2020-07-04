@@ -1,10 +1,10 @@
 import { CreateGameInput } from "../../generated";
 import { Context } from "../../context";
-import { GameEntity } from "../../../data-services";
+import { UserEntity } from "../../../data-services";
 
 interface GameMutationPartialPayload {
   errors: string[];
-  game: GameEntity;
+  currentUser: UserEntity;
 }
 
 export async function createGame(
@@ -16,7 +16,7 @@ export async function createGame(
   if (!currentUser) throw new Error(`Must be logged in to create a game`);
 
   const db = await context.connection;
-  const created = await db.transaction((tx) => {
+  await db.transaction((tx) => {
     return context.dataServices.Game.create({
       db: tx,
       ownerUserId: currentUser.id,
@@ -25,6 +25,6 @@ export async function createGame(
 
   return {
     errors: [],
-    game: created,
+    currentUser,
   };
 }

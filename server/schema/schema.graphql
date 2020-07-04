@@ -266,16 +266,6 @@ type GameInvitationConnection {
   nodes: [GameInvitation!]!
 }
 
-type GameMutationReturnPayload {
-  errors: [String!]!
-  game: Game
-}
-
-type GameInvitationMutationPayload {
-  errors: [String!]!
-  gameInvitation: GameInvitation
-}
-
 enum GameType {
   CLASSIC
 }
@@ -289,14 +279,27 @@ input CreateGameInvitationInput {
   toUserId: ID!
 }
 
+type CurrentUserMutationPayload {
+  errors: [String!]!
+  currentUser: CurrentUser!
+}
+
+input CreateFriendRequestInput {
+  toUserId: Int!
+}
+
 type Query {
   currentUser: CurrentUser
   ping: PingResponse!
 }
 
 type Mutation {
-  createGame(input: CreateGameInput): GameMutationReturnPayload!
+  # Game-related mutations
+  createGame(input: CreateGameInput): CurrentUserMutationPayload!
   createGameInvitation(
     input: CreateGameInvitationInput!
-  ): GameInvitationMutationPayload!
+  ): CurrentUserMutationPayload!
+
+  # Friend-related mutations
+  createFriendRequest(input: CreateFriendRequestInput): CurrentUserMutationPayload!
 }

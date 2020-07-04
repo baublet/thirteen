@@ -1,4 +1,5 @@
-import { create } from "./create";
+import { create, canCreate } from "./create";
+import { findByFromIdAndToId } from "./find-by-from-id-and-to-id";
 
 export const tableName: string = "friendRequests";
 
@@ -10,4 +11,4 @@ export interface FriendRequestEntity {
   status: "UNSEEN" | "SEEN" | "ACCEPTED" | "DECLINED" | "REVOKED";
 }
 
-export const Game = { create };
+export const FriendRequest = { create, canCreate, findByFromIdAndToId };

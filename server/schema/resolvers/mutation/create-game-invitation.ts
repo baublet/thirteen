@@ -1,10 +1,10 @@
 import { CreateGameInvitationInput } from "../../generated";
-import { GameInvitationEntity } from "../../../data-services";
+import { UserEntity } from "../../../data-services";
 import { Context } from "../../context";
 
 interface CreateGameInvitationPartialReturn {
   errors: string[];
-  gameInvitation?: GameInvitationEntity;
+  currentUser: UserEntity;
 }
 
 export async function createInvitation(
@@ -16,11 +16,8 @@ export async function createInvitation(
   const db = await context.connection;
   const GameInvitation = context.dataServices.GameInvitation;
 
-  if (!currentUser) {
-    return {
-      errors: ["You must be logged in to take this action"],
-    };
-  }
+  if (!currentUser)
+    throw new Error(`Must be logged in to create a game invitation`);
 
   const { gameId, toUserId } = input;
   const game = await context.getLoader("game").load(gameId);
@@ -28,6 +25,7 @@ export async function createInvitation(
   if (!game) {
     return {
       errors: [`Invalid game ${gameId}`],
+      currentUser,
     };
   }
 
@@ -40,12 +38,14 @@ export async function createInvitation(
       errors: [
         `Game owner user ID ${game.ownerUserId} does not correlate a user we know about`,
       ],
+      currentUser,
     };
   }
 
   if (currentUser.id !== gameOwner.userId) {
     return {
       errors: ["You can't invite players to games you don't own"],
+      currentUser,
     };
   }
 
@@ -58,6 +58,7 @@ export async function createInvitation(
   if (!canCreate) {
     return {
       errors: ["User already invited. Wait for them to respond"],
+      currentUser,
     };
   }
 
@@ -70,6 +71,6 @@ export async function createInvitation(
 
   return {
     errors: [],
-    gameInvitation,
+    currentUser,
   };
 }
