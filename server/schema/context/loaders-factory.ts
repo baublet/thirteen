@@ -1,11 +1,13 @@
 import DataLoader from "dataloader";
 
 import { Connection } from "../../config";
-import { User, Game } from "../../data-services";
+import { User, Game, GamePlayer } from "../../data-services";
 
 const dataLoaders = {
   user: User.dataLoaderFactory,
   game: Game.dataLoaderFactory,
+  gamePlayer: GamePlayer.dataLoaderFactory,
+  gamePlayerByGame: GamePlayer.gamePlayersByGameIdDataLoaderFactory,
 };
 
 type DataLoaderFactory = (

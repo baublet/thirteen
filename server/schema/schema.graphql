@@ -43,6 +43,7 @@ enum GameEventType {
 }
 
 type GamePlayer {
+  id: ID!
   user: User!
   hand: [Card!]!
 }
