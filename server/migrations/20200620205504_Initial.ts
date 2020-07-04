@@ -21,13 +21,28 @@ export async function up(knex: Knex): Promise<any> {
     table.integer("userId").index();
   });
 
-  return knex.schema.createTable("gameInvitations", (table) => {
+  await knex.schema.createTable("gameInvitations", (table) => {
     table.increments("id").primary();
     table.integer("createdAt").defaultTo(knex.fn.now());
     table.integer("gameId").index();
     table.integer("toUserId").index();
     table.integer("fromUserId").index();
-    table.text("status").index();
+    table.text("status").defaultTo("UNSEEN").index();
+  });
+
+  await knex.schema.createTable("friends", (table) => {
+    table.increments("id").primary();
+    table.integer("createdAt").defaultTo(knex.fn.now());
+    table.integer("aUserId").index();
+    table.integer("bUserId").index();
+  });
+
+  await knex.schema.createTable("friendRequests", (table) => {
+    table.increments("id").primary();
+    table.integer("createdAt").defaultTo(knex.fn.now());
+    table.integer("fromUserId").index();
+    table.integer("toUserId").index();
+    table.text("status").defaultTo("UNSEEN");
   });
 }
 
