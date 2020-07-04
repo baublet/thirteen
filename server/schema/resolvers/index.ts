@@ -2,13 +2,13 @@ import { GraphQLScalarType } from "graphql";
 
 import { PingResponse } from "./ping-response";
 import { resolveGameEventType } from "./game-event";
-import { games } from "./query/games";
-import { currentUser } from "./current-user";
+import { currentUser } from "./query/current-user";
 import { createGame } from "./create-game";
 
 import { Game } from "./game";
 import { GamePlayer } from "./game-player";
 import { User } from "./user";
+import { CurrentUser } from "./current-user";
 
 export interface PageInfo {
   totalCount: number;
@@ -37,12 +37,12 @@ export const root = {
   },
   PingResponse,
   User,
+  CurrentUser,
   Mutation: {
     createGame,
   },
   Query: {
     ping: () => ({}),
-    games,
     currentUser,
   },
 };

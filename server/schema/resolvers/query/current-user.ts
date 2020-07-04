@@ -1,5 +1,5 @@
-import { Context } from "../context";
-import { User } from "../generated";
+import { Context } from "../../context";
+import { User } from "../../generated";
 
 export async function currentUser(
   _: unknown,

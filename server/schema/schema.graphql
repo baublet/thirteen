@@ -5,6 +5,13 @@ type User {
   name: String!
 }
 
+type CurrentUser {
+  id: ID!
+  name: String!
+  games: GameConnection!
+  gameInvitations: GameInvitationConnection!
+}
+
 type PingResponse {
   authenticated: Boolean!
   response: String!
@@ -243,6 +250,11 @@ type GameConnection {
   nodes: [Game!]!
 }
 
+type GameInvitationConnection {
+  pageInfo: PageInfo!
+  nodes: [GameInvitation!]!
+}
+
 type GameMutationReturnPayload {
   errors: [String!]!
   game: Game!
@@ -256,13 +268,19 @@ input CreateGameInput {
   type: GameType
 }
 
-type Query {
-  currentUser: User
+input CreateGameInvitationInput {
+  gameId: ID!
+  toUserId: ID!
+}
 
+type Query {
+  currentUser: CurrentUser
   ping: PingResponse!
-  games: GameConnection!
 }
 
 type Mutation {
   createGame(input: CreateGameInput): GameMutationReturnPayload!
+  createGameInvitation(
+    input: CreateGameInvitationInput!
+  ): GameMutationReturnPayload!
 }
