@@ -6,7 +6,6 @@ export async function user(
   _: unknown,
   context: Context
 ): Promise<UserEntity> {
-  console.log("Game player parent: ", gamePlayerEntity);
   const user = await context.getLoader("user").load(gamePlayerEntity.userId);
   if (!user) {
     throw new Error(

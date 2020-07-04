@@ -1,3 +1,5 @@
+import { GraphQLScalarType } from "graphql";
+
 import { PingResponse } from "./ping-response";
 import { resolveGameEventType } from "./game-event";
 import { games } from "./query/games";
@@ -21,6 +23,13 @@ export interface GameConnectionPartial {
 }
 
 export const root = {
+  ID: new GraphQLScalarType({
+    name: "ID",
+    description: "Custom ID type",
+    serialize(value) {
+      return parseInt(value, 10);
+    },
+  }),
   Game,
   GamePlayer,
   GameEvent: {
