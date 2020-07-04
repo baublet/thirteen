@@ -1,9 +1,10 @@
-import { create } from "./create";
+import { create, canCreate } from "./create";
 import { findByGameId } from "./find-by-game-id";
 import { findByToUserId } from "./find-by-to-user-id";
 import { seen } from "./seen";
 import { accept } from "./accept";
 import { revoke } from "./revoke";
+import { findOutstandingByToUserIdAndGameId } from "./find-outstanding-by-user-id-and-game-id";
 
 export const tableName: string = "gameInvitations";
 
@@ -23,4 +24,6 @@ export const GameInvitation = {
   seen,
   accept,
   revoke,
+  findOutstandingByToUserIdAndGameId,
+  canCreate,
 };

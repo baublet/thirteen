@@ -1,23 +1,22 @@
 import { Context } from "../../context";
 
-export async function gameConnectionFactory({
+export async function gameInvitationConnectionFactory({
   context,
-  ownerUserId,
+  toUserId,
 }: {
   context: Context;
-  ownerUserId?: number;
+  toUserId?: number;
 }) {
-  const Game = context.dataServices.Game;
-
-  if (!ownerUserId) {
+  const GameInvitation = context.dataServices.GameInvitation;
+  if (!toUserId) {
     throw new Error(`Can't create a connection factory without any parameters`);
   }
 
   async function getEntities() {
     const db = await context.connection;
-    return await Game.findByOwnerUserId({
+    return await GameInvitation.findByToUserId({
       db,
-      ownerUserId: ownerUserId as number,
+      toUserId: toUserId as number,
     });
   }
 

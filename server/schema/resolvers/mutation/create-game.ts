@@ -1,6 +1,6 @@
-import { CreateGameInput } from "../generated";
-import { Context } from "../context";
-import { GameEntity } from "../../data-services";
+import { CreateGameInput } from "../../generated";
+import { Context } from "../../context";
+import { GameEntity } from "../../../data-services";
 
 interface GameMutationPartialPayload {
   errors: string[];
@@ -9,7 +9,7 @@ interface GameMutationPartialPayload {
 
 export async function createGame(
   _: unknown,
-  __: CreateGameInput,
+  input: CreateGameInput,
   context: Context
 ): Promise<GameMutationPartialPayload> {
   const currentUser = await context.currentUser;

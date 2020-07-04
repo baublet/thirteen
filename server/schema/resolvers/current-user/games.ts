@@ -1,16 +1,11 @@
 import { Context } from "../../context";
 import { gameConnectionFactory } from "../game-connection";
+import { UserEntity } from "../../../data-services";
 
 export async function games(
-  _: unknown,
+  userEntity: UserEntity,
   __: unknown,
   context: Context
-): Promise<{}> {
-  const currentUser = await context.currentUser;
-  if (!currentUser) {
-    throw new Error(
-      `Invariant error... Current user unable to be resolved within the current user resolver`
-    );
-  }
-  return gameConnectionFactory({ context, ownerUserId: currentUser.id });
+) {
+  return gameConnectionFactory({ context, ownerUserId: userEntity.id });
 }

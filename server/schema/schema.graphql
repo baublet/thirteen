@@ -257,7 +257,12 @@ type GameInvitationConnection {
 
 type GameMutationReturnPayload {
   errors: [String!]!
-  game: Game!
+  game: Game
+}
+
+type GameInvitationMutationPayload {
+  errors: [String!]!
+  gameInvitation: GameInvitation
 }
 
 enum GameType {
@@ -282,5 +287,5 @@ type Mutation {
   createGame(input: CreateGameInput): GameMutationReturnPayload!
   createGameInvitation(
     input: CreateGameInvitationInput!
-  ): GameMutationReturnPayload!
+  ): GameInvitationMutationPayload!
 }

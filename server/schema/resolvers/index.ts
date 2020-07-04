@@ -1,14 +1,18 @@
 import { GraphQLScalarType } from "graphql";
 
+// Fields
 import { PingResponse } from "./ping-response";
 import { resolveGameEventType } from "./game-event";
-import { currentUser } from "./query/current-user";
-import { createGame } from "./create-game";
-
 import { Game } from "./game";
 import { GamePlayer } from "./game-player";
 import { User } from "./user";
 import { CurrentUser } from "./current-user";
+
+// Queries
+import { currentUser } from "./query/current-user";
+
+// Mutations
+import { createGame } from "./mutation/create-game";
 
 export interface PageInfo {
   totalCount: number;

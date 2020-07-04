@@ -1,0 +1,1 @@
+export { gameInvitationConnectionFactory } from "./game-invitation-connection-factory"

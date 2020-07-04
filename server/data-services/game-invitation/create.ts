@@ -1,11 +1,26 @@
 import { Connection, Transaction } from "../../config";
 import { GameInvitationEntity, tableName } from ".";
+import { findOutstandingByToUserIdAndGameId } from "./find-outstanding-by-user-id-and-game-id";
 
 interface CreateGameInvitationProps {
   db: Transaction | Connection;
   toUserId: number;
   fromUserId: number;
   gameId: number;
+}
+
+export async function canCreate({
+  db,
+  toUserId,
+  gameId,
+}: CreateGameInvitationProps): Promise<boolean> {
+  const existing = await findOutstandingByToUserIdAndGameId({
+    db,
+    toUserId,
+    gameId,
+  });
+  if (existing) return true;
+  return false;
 }
 
 export async function create({

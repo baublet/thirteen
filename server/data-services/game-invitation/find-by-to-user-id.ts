@@ -1,7 +1,7 @@
 import { Connection, Transaction } from "../../config";
 import { GameInvitationEntity, tableName } from ".";
 
-interface FindBytoUserIdProps {
+interface FindByToUserIdProps {
   toUserId: number;
   db: Transaction | Connection;
 }
@@ -9,6 +9,6 @@ interface FindBytoUserIdProps {
 export async function findByToUserId({
   db,
   toUserId,
-}: FindBytoUserIdProps): Promise<GameInvitationEntity[]> {
+}: FindByToUserIdProps): Promise<GameInvitationEntity[]> {
   return db.select("*").from(tableName).where({ toUserId });
 }
