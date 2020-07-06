@@ -3,12 +3,12 @@ scalar Date
 type User {
   id: ID!
   name: String!
-  friends: FriendConnection!
 }
 
 type CurrentUser {
   id: ID!
   name: String!
+  friends: FriendConnection!
   games: GameConnection!
   gameInvitations: GameInvitationConnection!
 }
@@ -52,12 +52,12 @@ type FriendConnection {
 }
 
 enum GameEventType {
-  concede
-  game_over
-  new_game
-  new_set
-  pass
-  play
+  CONCEDE
+  GAME_OVER
+  NEW_GAME
+  NEW_SET
+  PASS
+  PLAY
 }
 
 type GamePlayer {
@@ -301,5 +301,7 @@ type Mutation {
   ): CurrentUserMutationPayload!
 
   # Friend-related mutations
-  createFriendRequest(input: CreateFriendRequestInput): CurrentUserMutationPayload!
+  createFriendRequest(
+    input: CreateFriendRequestInput
+  ): CurrentUserMutationPayload!
 }

@@ -6,7 +6,7 @@ interface RevokeFriendRequestProps {
   requestId: number;
 }
 
-export async function canDecline({
+export async function canRevoke({
   db,
   requestId,
 }: RevokeFriendRequestProps): Promise<boolean> {
@@ -19,7 +19,7 @@ export async function canDecline({
   return ["UNSEEN", "SEEN"].includes(results[0].status);
 }
 
-export async function decline({
+export async function revoke({
   db,
   requestId,
 }: RevokeFriendRequestProps): Promise<FriendRequestEntity> {

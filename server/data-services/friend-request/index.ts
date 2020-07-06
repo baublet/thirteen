@@ -1,5 +1,6 @@
 import { create, canCreate } from "./create";
 import { findByFromIdAndToId } from "./find-by-from-id-and-to-id";
+import { findFriendsByUserId } from "./find-friends-by-user-id";
 
 export const tableName: string = "friendRequests";
 
@@ -11,4 +12,9 @@ export interface FriendRequestEntity {
   status: "UNSEEN" | "SEEN" | "ACCEPTED" | "DECLINED" | "REVOKED";
 }
 
-export const FriendRequest = { create, canCreate, findByFromIdAndToId };
+export const FriendRequest = {
+  create,
+  canCreate,
+  findByFromIdAndToId,
+  findFriendsByUserId,
+};

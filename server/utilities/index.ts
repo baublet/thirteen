@@ -1,7 +1,8 @@
-import { info, error, warn } from "./log";
+import { info, error, warn, debug } from "./log";
 
 export const log = {
-  info,
+  debug,
   error,
+  info,
   warn,
 };

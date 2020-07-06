@@ -9,5 +9,5 @@ export async function currentUser(
   const currentUser = await context.currentUser;
   if (!currentUser) return null;
   const providerData = JSON.parse(currentUser.providerData);
-  return { id: currentUser.id, name: providerData.name };
+  return { id: currentUser.id, name: providerData.name, friends: {} as any };
 }

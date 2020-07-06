@@ -44,3 +44,9 @@ export function warn(...data: any[]) {
 export function error(...data: any[]) {
   console.log(serializeArguments(data));
 }
+
+export function debug(...data: any[]) {
+  if (process.env.NODE_ENV === "test" || Boolean(process.env.DEBUG)) {
+    console.log(serializeArguments(data));
+  }
+}
